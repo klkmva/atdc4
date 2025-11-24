@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Filament\Resources\Partners\Pages;
+
+use App\Filament\Resources\Partners\PartnerResource;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreatePartner extends CreateRecord
+{
+    use \App\RedirectIndex;
+    
+    protected static string $resource = PartnerResource::class;
+
+    public function getTitle(): string
+    {
+        return 'Créer un partenaire';
+    }
+}
