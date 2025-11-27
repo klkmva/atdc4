@@ -18,7 +18,7 @@ class LocationResource extends Resource
 {
     protected static ?string $model = Location::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'gmdi-location-on-tt';
 
     protected static ?string $recordTitleAttribute = 'Lieu';
 

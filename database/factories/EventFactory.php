@@ -18,15 +18,17 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => fake()->dateTimeBetween('+1 days', '+1 month'),
+            'date' => fake()->dateTimeBetween('-12 month', '+6 month'),
             'time' => '19:00',
             'title' => fake()->sentence(),
             'subtitle' => fake()->sentence(),
-            'description' => fake()->paragraph(),
-            'location_id' => Location::query()->inRandomOrder()->first()->id,
+            'info' => fake()->paragraph(),
+            'location_id' => null,
             'image' => fake()->imageUrl(800, 600, 'events'),
             'published' => fake()->boolean(99),
             'canceled' => false,
+            'work_id' => null,
+            'video' => null,
         ];
     }
 }

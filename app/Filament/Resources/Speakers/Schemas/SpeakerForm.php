@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Speakers\Schemas;
 
-use Dom\Text;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;

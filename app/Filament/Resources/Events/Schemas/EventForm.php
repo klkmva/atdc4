@@ -25,16 +25,17 @@ class EventForm
                     ->columns(2)
                     ->description('Date et heure de l\'événement')
                     ->schema([
-                    DatePicker::make('date')
-                        ->hiddenLabel()
-                        ->default(\now())
-                        ->closeOnDateSelection(true),
-                    TimePicker::make('time')
-                        ->hiddenLabel()
-                        ->default('19:00')
-                        ->closeOnDateSelection(true)
-                        ->seconds(false),
-                    ])->columnSpan(2),
+                        DatePicker::make('date')
+                            ->hiddenLabel()
+                            ->default(\now())
+                            ->closeOnDateSelection(true),
+                        TimePicker::make('time')
+                            ->hiddenLabel()
+                            ->default('19:00')
+                            ->closeOnDateSelection(true)
+                            ->seconds(false),
+                    ])
+                    ->columnSpan(2),
                 Section::make()
                     ->description('Lieu de l\'événement')
                     ->schema([
@@ -63,22 +64,100 @@ class EventForm
                 Select::make('speakers')
                     ->label('Intervenants')
                     ->multiple()
-                    ->relationship('speakers', 'name')
-                    ->columnSpan(4),
+                    ->relationship('speakers', 'full_name')
+                    ->searchable(['first_name', 'last_name'])
+                    ->searchingMessage('Recherche des intervenants...')
+                    ->preload()
+                    ->createOptionForm([
+                        Section::make()
+                            ->description('Nom et prénom')
+                            ->schema([
+                                TextInput::make('first_name')
+                                    ->hiddenLabel()
+                                    ->placeholder('Prénom')
+                                    ->columnSpan(1),
+                                TextInput::make('last_name')
+                                    ->hiddenLabel()
+                                    ->placeholder('Nom')
+                                    ->columnSpan(1),
+                            ])->columns(2)->columnSpan(2),
+                        FileUpload::make('image')
+                            ->label('Photo')
+                            ->image()
+                            ->placeholder('Télécharger une photo')
+                            ->directory('images/speakers')
+                            ->avatar()
+                            ->columnSpan(1)
+                            ->extraFieldWrapperAttributes(['style' => 'justify-items: center;']),
+                        RichEditor::make('info')
+                            ->label('Biographie')
+                            ->placeholder('Biographie du conférencier...')
+                            ->columnSpanfull()
+                            ->toolbarButtons([
+                                ['undo', 'redo'],
+                                ['bold', 'italic', 'underline'],
+                                ['bulletList', 'orderedList'],
+                                ['superscript', 'subscript'],
+                                'link',
+                            ])
+                            ->extraInputAttributes(['style' => 'min-height: 10vh; max-height: 20vh; overflow-y: auto;']),
+                        Select::make('contact_id')
+                            ->label('Contact')
+                            ->relationship('contact', 'full_name')
+                            ->placeholder('Sélectionner un contact')
+                            ->columnSpan(1),
+                        ])
+                    ->columnSpan(2),
+                
+                Select::make('partners')
+                    ->label('Partenaires')
+                    ->multiple()
+                    ->relationship('partners', 'name')
+                    ->searchable('name')
+                    ->searchingMessage('Recherche des partenaires...')
+                    ->preload()
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->label('Nom du partenaire')
+                            ->placeholder('Nom')
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('short_name')
+                            ->label('Nom abrégé')
+                            ->placeholder('Nom abrégé')
+                            ->maxLength(50),
+                        TextInput::make('website')
+                            ->label('Site web')
+                            ->placeholder('https://exemple.com')
+                            ->url()
+                            ->maxLength(255),
+                        Select::make('contact_id')
+                            ->label('Contact')
+                            ->relationship('contact', 'full_name')
+                            ->placeholder('Sélectionner un contact')
+                            ->columnSpan(1),
+                        ])
+                    ->columnSpan(2),
 
                 FieldSet::make('Statut de l\'événement')
                     ->columns(2)
                     ->schema([
                         Checkbox::make('published')
-                            ->label('Publié ?'),
+                            ->label('Publié'),
                         Checkbox::make('canceled')
-                            ->label('Annulé ?'),
-                    ])->columnSpan(2),
+                            ->label('Annulé'),
+                    ])->columnSpan(1),
+
+                Select::make('work_id')
+                    ->label('Ouvrage associé')
+                    ->relationship('work', 'title')
+                    ->placeholder('Sélectionner un ouvrage')
+                    ->columnSpan(2),
 
                 FileUpload::make('image')
                     ->label('Image de l\'événement')
                     ->directory('events/images')
-                    ->columnSpan(2),
+                    ->columnSpan(1),
                 ]);
     }
 }

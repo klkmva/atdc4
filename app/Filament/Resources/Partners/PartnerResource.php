@@ -18,7 +18,7 @@ class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'phosphor-handshake-duotone';
 
     protected static ?string $recordTitleAttribute = 'Partenaire';
 

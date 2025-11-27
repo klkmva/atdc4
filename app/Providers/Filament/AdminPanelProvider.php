@@ -10,19 +10,14 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\View\PanelsRenderHook;
-use Illuminate\Support\Facades\Blade;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
-use App\Filament\Resources\Members\Widgets\ListWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\FontProviders\GoogleFontProvider;
-use EightyNine\Reports\ReportsPlugin;
-use PhpParser\Node\Expr\List_;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -60,6 +55,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->brandLogo(fn() => view('filament.logo'))
-            ->renderHook(PanelsRenderHook::TOPBAR_LOGO_AFTER, fn() => view('filament.brand'));
+            ->renderHook(PanelsRenderHook::TOPBAR_LOGO_AFTER, fn() => view('filament.brand'))
+            ->sidebarCollapsibleOnDesktop(true);
     }
 }

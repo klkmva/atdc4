@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Actus\Tables;
 
+use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class ActusTable
@@ -13,7 +15,13 @@ class ActusTable
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('date')
+                    ->label('Date')
+                    ->date('d/m/Y')
+                    ->sortable(),
+                TextColumn::make('title')
+                    ->label('Titre')
+                    ->searchable()
             ])
             ->filters([
                 //

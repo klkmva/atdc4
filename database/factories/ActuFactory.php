@@ -19,7 +19,7 @@ class ActuFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'info' => $this->faker->paragraphs(3, true),
-            'image' => $this->faker->imageUrl(),
+            'image' => $this->faker->imageUrl(200, 300, 'news'),
             'date' => $this->faker->date(),
         ];
     }

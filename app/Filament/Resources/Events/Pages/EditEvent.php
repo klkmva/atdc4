@@ -8,6 +8,8 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditEvent extends EditRecord
 {
+    use \App\RedirectIndex;
+
     protected static string $resource = EventResource::class;
 
     protected function getHeaderActions(): array

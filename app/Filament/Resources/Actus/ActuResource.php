@@ -11,14 +11,13 @@ use App\Models\Actu;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class ActuResource extends Resource
 {
     protected static ?string $model = Actu::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-newspaper';
 
     protected static ?string $recordTitleAttribute = 'Actualité';
 

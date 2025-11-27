@@ -16,15 +16,14 @@ class ContactForm
                 Section::make('Identité')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('first_name')
-                            ->label('Prénom')
-                            ->placeholder('Prénom du contact')
-                            ->required()
-                            ->maxLength(255),
                         TextInput::make('last_name')
                             ->label('Nom')
                             ->placeholder('Nom du contact')
                             ->required()
+                            ->maxLength(255),
+                        TextInput::make('first_name')
+                            ->label('Prénom')
+                            ->placeholder('Prénom du contact')
                             ->maxLength(255),
                     ])->columnSpan(2),
                     Section::make('Coordonnnées')
@@ -42,7 +41,7 @@ class ContactForm
                             ->maxLength(50),
                         TextInput::make('company')
                             ->label('Structure')
-                            ->placeholder('Structure du contact')
+                            ->placeholder('Structure à laquelle appartient le contact')
                             ->maxLength(255),
                         TextInput::make('phone2')
                             ->columnStart(2)

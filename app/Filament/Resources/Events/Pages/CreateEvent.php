@@ -7,6 +7,8 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateEvent extends CreateRecord
 {
+    use \App\RedirectIndex;
+
     protected static string $resource = EventResource::class;
 
     public function getTitle(): string

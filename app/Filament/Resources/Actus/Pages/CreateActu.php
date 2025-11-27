@@ -7,6 +7,8 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateActu extends CreateRecord
 {
+    use \App\RedirectIndex;
+    
     protected static string $resource = ActuResource::class;
 
     public function getTitle(): string

@@ -20,10 +20,8 @@ class PartnerFactory extends Factory
         return [
             'name' => fake()->company(),
             'short_name' => fake()->lexify('????'),
-            'email' => fake()->unique()->companyEmail(),
             'website' => fake()->url(),
-            'phone' => fake()->phoneNumber(),
-            'contact_id' => Contact::query()->inRandomOrder()->first()->id ?? null,
+            'contact_id' => Contact::query()->inRandomOrder()->first()->id,
         ];
     }
 }
