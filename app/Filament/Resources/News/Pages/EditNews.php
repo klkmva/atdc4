@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\Actus\Pages;
+namespace App\Filament\Resources\News\Pages;
 
-use App\Filament\Resources\Actus\ActuResource;
+use App\Filament\Resources\News\NewsResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditActu extends EditRecord
+class EditNews extends EditRecord
 {
     use \App\RedirectIndex;
 
-    protected static string $resource = ActuResource::class;
+    protected static string $resource = NewsResource::class;
 
     protected function getHeaderActions(): array
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Actus\Schemas;
+namespace App\Filament\Resources\News\Schemas;
 
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\DatePicker;
@@ -8,7 +8,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 
-class ActuForm
+class NewsForm
 {
     public static function configure(Schema $schema): Schema
     {

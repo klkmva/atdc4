@@ -26,7 +26,7 @@ class ContactForm
                             ->placeholder('Prénom du contact')
                             ->maxLength(255),
                     ])->columnSpan(2),
-                    Section::make('Coordonnnées')
+                Section::make('Coordonnnées')
                     ->columns(3)
                     ->columnSpanFull()
                     ->schema([

@@ -26,6 +26,8 @@ class WorkResource extends Resource
 
     protected static ?string $modelLabel = 'Ouvrage';
 
+    protected static ?int $navigationSort = 6;
+
     public static function form(Schema $schema): Schema
     {
         return WorkForm::configure($schema);

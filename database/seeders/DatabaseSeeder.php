@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Actu;
+use App\Models\News;
 use App\Models\Contact;
 use App\Models\Event;
 use App\Models\Location;
@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Actu::factory()->count(20)->create();
+        News::factory()->count(20)->create();
         Contact::factory()->count(50)->create();
         Event::factory()->count(50)->create();
         Location::factory()->count(5)->create();

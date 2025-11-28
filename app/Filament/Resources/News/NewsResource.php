@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Filament\Resources\Actus;
+namespace App\Filament\Resources\News;
 
-use App\Filament\Resources\Actus\Pages\CreateActu;
-use App\Filament\Resources\Actus\Pages\EditActu;
-use App\Filament\Resources\Actus\Pages\ListActus;
-use App\Filament\Resources\Actus\Schemas\ActuForm;
-use App\Filament\Resources\Actus\Tables\ActusTable;
-use App\Models\Actu;
+use App\Filament\Resources\News\Pages\CreateNews;
+use App\Filament\Resources\News\Pages\EditNews;
+use App\Filament\Resources\News\Pages\ListNews;
+use App\Filament\Resources\News\Schemas\NewsForm;
+use App\Filament\Resources\News\Tables\NewsTable;
+use App\Models\News;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 
-class ActuResource extends Resource
+class NewsResource extends Resource
 {
-    protected static ?string $model = Actu::class;
+    protected static ?string $model = News::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-newspaper';
 
@@ -25,14 +25,16 @@ class ActuResource extends Resource
 
     protected static ?string $modelLabel = 'Actualité';
 
+    protected static ?int $navigationSort = 8;
+
     public static function form(Schema $schema): Schema
     {
-        return ActuForm::configure($schema);
+        return NewsForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return ActusTable::configure($table);
+        return NewsTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -45,9 +47,9 @@ class ActuResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListActus::route('/'),
-            'create' => CreateActu::route('/create'),
-            'edit' => EditActu::route('/{record}/edit'),
+            'index' => ListNews::route('/'),
+            'create' => CreateNews::route('/create'),
+            'edit' => EditNews::route('/{record}/edit'),
         ];
     }
 }

@@ -114,7 +114,7 @@ class EventForm
                     ->multiple()
                     ->relationship('partners', 'name')
                     ->searchable('name')
-                    ->searchingMessage('Recherche des partenaires...')
+                    ->searchingMessage('Recherche un partenaire...')
                     ->preload()
                     ->createOptionForm([
                         TextInput::make('name')

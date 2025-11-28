@@ -7,14 +7,11 @@ use App\Filament\Resources\Members\Pages\EditMember;
 use App\Filament\Resources\Members\Pages\ListMembers;
 use App\Filament\Resources\Members\Schemas\MemberForm;
 use App\Filament\Resources\Members\Tables\MembersTable;
-use App\Filament\Resources\Members\Reports\ActiveMembersReport;
 use App\Models\Member;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Jimmyjs\ReportGenerator\ReportMedia\PdfReport;
 
 class MemberResource extends Resource
 {
@@ -27,6 +24,8 @@ class MemberResource extends Resource
     protected static ?string $breadcrumb = 'Adhérent';
 
     protected static ?string $modelLabel = 'Adhérent';
+
+    protected static ?int $navigationSort = 9;
 
     public static function form(Schema $schema): Schema
     {

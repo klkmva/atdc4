@@ -1,23 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\Publishers\Tables;
+namespace App\Filament\Resources\Schedules\Tables;
 
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class PublishersTable
+class SchedulesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label('Nom')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('website')
-                    ->label('Site web'),
+                //
             ])
             ->filters([
                 //
@@ -26,7 +22,9 @@ class PublishersTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                //
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 }

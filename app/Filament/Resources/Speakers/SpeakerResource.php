@@ -26,6 +26,8 @@ class SpeakerResource extends Resource
 
     protected static ?string $modelLabel = 'Intervenant';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Schema $schema): Schema
     {
         return SpeakerForm::configure($schema);

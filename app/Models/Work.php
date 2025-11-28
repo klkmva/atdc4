@@ -13,6 +13,7 @@ class Work extends Model
         'title',
         'subtitle',
         'authors',
+        'publisher_id',
         'summary',
         'publication_date',
         'publisher_id',

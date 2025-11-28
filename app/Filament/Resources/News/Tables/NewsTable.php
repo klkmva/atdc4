@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Actus\Tables;
+namespace App\Filament\Resources\News\Tables;
 
 use Dom\Text;
 use Filament\Actions\BulkActionGroup;
@@ -9,7 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ActusTable
+class NewsTable
 {
     public static function configure(Table $table): Table
     {
@@ -30,9 +30,6 @@ class ActusTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }
