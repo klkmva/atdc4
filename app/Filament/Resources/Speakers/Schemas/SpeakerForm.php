@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Speakers\Schemas;
 
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -32,7 +33,6 @@ class SpeakerForm
                     ->label('Photo')
                     ->image()
                     ->placeholder('Télécharger une photo')
-                    ->directory('images/speakers')
                     ->avatar()
                     ->columnSpan(1)
                     ->extraFieldWrapperAttributes(['style' => 'justify-items: center;']),

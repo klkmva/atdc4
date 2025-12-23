@@ -20,7 +20,7 @@ class NewsForm
                     ->closeOnDateSelection(true),
                 FileUpload::make('image')
                     ->label('Image de l\'actualité')
-                    ->directory('actus/images'),
+                    ->image(),
                 TextInput::make('title')
                     ->label('Titre de l\'actualité')
                     ->placeholder('Titre de l\'actualité')

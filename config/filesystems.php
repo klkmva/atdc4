@@ -44,7 +44,7 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/private'),
             'serve' => true,
-            'throw' => false,
+            'throw' => true,
             'report' => false,
         ],
 
@@ -53,10 +53,20 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-            'throw' => false,
+            'serve' => true,
+            'throw' => true,
             'report' => false,
         ],
 
+        'images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/images'),
+            'url' => env('APP_URL').'/storage/images',
+            'visibility' => 'public',
+            'serve' => true,
+            'throw' => true,
+            'report' => false,
+        ],
     ],
 
     /*
@@ -69,9 +79,10 @@ return [
     | the locations of the links and the values should be their targets.
     |
     */
-
+    
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('images') => storage_path('app/images'),
     ],
 
 ];

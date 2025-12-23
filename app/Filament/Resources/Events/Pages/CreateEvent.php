@@ -11,6 +11,8 @@ class CreateEvent extends CreateRecord
 
     protected static string $resource = EventResource::class;
 
+    public string $image;
+
     public function getTitle(): string
     {
         return 'Créer une conférence';

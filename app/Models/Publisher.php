@@ -15,9 +15,9 @@ class Publisher extends Model
         'website',
     ];
 
-    public function works()
+    public function books()
     {
-        return $this->belongsToMany(Work::class);
+        return $this->belongsToMany(Book::class);
     }
 
     public function contact()

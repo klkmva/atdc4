@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,12 +21,12 @@ class EventFactory extends Factory
             'time' => '19:00',
             'title' => fake()->sentence(),
             'subtitle' => fake()->sentence(),
-            'info' => fake()->paragraph(),
+            'info' => fake()->paragraph(10),
             'location_id' => null,
             'image' => fake()->imageUrl(800, 600, 'events'),
             'published' => fake()->boolean(99),
             'canceled' => false,
-            'work_id' => null,
+            'book_id' => null,
             'video' => null,
         ];
     }

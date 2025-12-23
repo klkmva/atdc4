@@ -10,7 +10,7 @@ use App\Models\Member;
 use App\Models\Partner;
 use App\Models\Publisher;
 use App\Models\Speaker;
-use App\Models\Work;
+use App\Models\Book;
 use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
@@ -21,12 +21,13 @@ class DatabaseSeeder extends Seeder
     {
         News::factory()->count(20)->create();
         Contact::factory()->count(50)->create();
-        Event::factory()->count(50)->create();
         Location::factory()->count(5)->create();
         Member::factory()->count(70)->create();
         Partner::factory()->count(5)->create();
         Publisher::factory()->count(10)->create();
         Speaker::factory()->count(30)->create();
-        Work::factory()->count(10)->create();
+        Book::factory()->count(10)->create();
+        $seeder = new EventSeeder();
+        $seeder->run();
     }
 }
