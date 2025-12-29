@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources\News\Tables;
 
-use Dom\Text;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -27,9 +25,13 @@ class NewsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
+                //
             ]);
     }
 }

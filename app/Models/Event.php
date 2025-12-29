@@ -89,6 +89,7 @@ class Event extends Model
 
         static::saving(function ($event) {
                 $image = $event->image;
+                $path = '/storage/images/events/';
                 if (preg_match('/^data:.*/', $image)) {
                     try {
                         $a = explode(',', $image);
@@ -99,13 +100,19 @@ class Event extends Model
                         $name = uniqid() . '.' . $ext;
                         $encoded = $a[count($a) - 1];
                         $decoded = base64_decode($encoded);
-                        // $fp = fopen('/images/events/' . $name, 'w');
-                        // $result = fwrite($fp, $decoded);
-                        // fclose($fp);
-                        if (Storage::disk('public')->put('/events/' . $name, $decoded) === false) {
-                            throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
-                        };
-                        $event->image = Storage::url('/images/events/' . $name);
+                        try {
+                            $fp = fopen($path . $name, 'w');
+                            fwrite($fp, $decoded);
+                            fclose($fp);
+                            $event->image = $path . $name;
+                        }
+                        catch (\Exception $e) {
+                            if (Storage::disk('public')->put('/events/' . $name, $decoded) === false) {
+                                throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
+                            };
+                            $event->image = Storage::url('/events/' . $name);
+                        }
+
                         Notification::make()
                             ->title('[' . $name . '] Image uploadée avec succès.')
                             ->success()

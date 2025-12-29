@@ -2,8 +2,7 @@
 
 namespace App\Filament\Resources\Events\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -26,12 +25,13 @@ class EventsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+            DeleteAction::make()
+                ->icon('heroicon-o-trash')
+                ->iconButton()
+                ->requiresConfirmation(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 }

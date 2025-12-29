@@ -21,7 +21,7 @@ class SpeakerFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'info' => fake()->paragraph(),
-            'image' => fake()->imageUrl(400, 400, 'people'),
+            'image' => null,
             'contact_id' => Contact::query()->inRandomOrder()->first()->id ?? null,
         ];
     }

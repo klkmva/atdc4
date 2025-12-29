@@ -117,6 +117,7 @@ return new class extends Migration
                 $table->string('authors')->nullable();
                 $table->text('summary')->nullable();
                 $table->date('publication_date')->nullable();
+                $table->string('isbn', 20)->nullable();
                 $table->foreignId('publisher_id')
                     ->nullable()
                     ->references('id')

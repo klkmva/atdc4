@@ -117,4 +117,9 @@ return [
 
     'system_route_prefix' => 'filament',
 
+    'layout' => [
+        'sidebar' => [
+            'width' => '20rem',
+        ],
+    ],
 ];

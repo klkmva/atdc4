@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Books\Tables;
 
 use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -22,7 +23,7 @@ class BooksTable
                     ->searchable(),
                 TextColumn::make('publication_date')
                     ->label('Date de publication')
-                    ->date()
+                    ->date('M Y')
                     ->sortable(),
                 TextColumn::make('publisher.name')
                     ->label('Éditeur')
@@ -33,7 +34,10 @@ class BooksTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 //

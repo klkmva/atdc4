@@ -3,19 +3,19 @@
 namespace App\Filament\Resources\Speakers\Schemas;
 
 use Filament\Schemas\Schema;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
+use App\Filament\Forms\Components\ImageInput;
+use Filament\Actions\Action;
 
 class SpeakerForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(3)
+            ->columns(4)
             ->components([
                 Section::make()
                     ->description('Nom et prénom')
@@ -28,14 +28,34 @@ class SpeakerForm
                             ->hiddenLabel()
                             ->placeholder('Nom')
                             ->columnSpan(1),
-                    ])->columns(2)->columnSpan(2),
-                FileUpload::make('image')
-                    ->label('Photo')
-                    ->image()
-                    ->placeholder('Télécharger une photo')
-                    ->avatar()
-                    ->columnSpan(1)
-                    ->extraFieldWrapperAttributes(['style' => 'justify-items: center;']),
+                    ])->columns(2)->columnSpan(3),
+                Section::make('Photo')
+                    ->columns(1)
+                    ->afterHeader(
+                        [
+                            Action::make('removeImage')
+                                ->label('')
+                                ->color('danger')
+                                ->icon('heroicon-o-trash')
+                                ->action(function ($record, $form) {
+                                    $record->image = null;
+                                    $record->save();
+                                    $form->fill([
+                                        'image' => null,
+                                    ]);
+                                })
+                                ->hidden(fn($record) => !$record || !$record->image),
+                        ]
+                    )
+                    ->schema([
+                        ImageInput::make('image')
+                            ->hiddenLabel()
+                            ->size('50px')
+                            ->live()
+                            ->reactive()
+                            ->extraFieldWrapperAttributes(['style' => 'justify-items: center;']),
+                    ])->columnSpan(1),
+                    
                 RichEditor::make('info')
                     ->label('Biographie')
                     ->placeholder('Biographie du conférencier...')
@@ -52,7 +72,7 @@ class SpeakerForm
                     ->label('Contact')
                     ->relationship('contact', 'full_name')
                     ->placeholder('Sélectionner un contact')
-                    ->columnSpan(1),
+                    ->columnSpan(2),
             ]);
     }
 }

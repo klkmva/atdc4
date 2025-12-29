@@ -16,8 +16,7 @@ use Filament\Schemas\Components\FieldSet;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Utilities\Get;
 use App\Filament\Forms\Components\ImageInput;
-use Dom\Text;
-use Laravel\Pail\File;
+use Filament\Actions\Action;
 
 class EventForm
 {
@@ -27,26 +26,149 @@ class EventForm
             ->columns(4)
             ->components([
                 Section::make()
-                    ->columns(2)
+                    ->columns(6)
                     ->schema([
                         DatePicker::make('date')
-                            ->hiddenLabel()
+                            ->label('Date')
                             ->default(\now())
-                            ->closeOnDateSelection(true),
+                            ->closeOnDateSelection(true)
+                            ->columnSpan(1),
                         TimePicker::make('time')
-                            ->hiddenLabel()
+                            ->label('Heure de début')
                             ->default('19:00')
                             ->closeOnDateSelection(true)
-                            ->seconds(false),
-                    ])
-                    ->columnSpan(2),
-                Section::make()
-                    ->schema([
+                            ->seconds(false)
+                            ->columnSpan(1),
                         Select::make('location_id')
-                            ->hiddenLabel()
+                            ->label('Lieu')
                             ->relationship('location', 'name')
-                            ->placeholder('Sélectionner un lieu'),
-                    ])->columnSpan(2),
+                            ->placeholder('Sélectionner un lieu')
+                            ->columnSpan(2),
+                        Select::make('book_id')
+                            ->label('Ouvrage associé')
+                            ->relationship('book', 'title')
+                            ->columnSpan(2)
+                            ->placeholder('Sélectionner un ouvrage')
+                            ->searchable('title')
+                            ->searchingMessage('Recherche un ouvrage...')
+                            ->preload()
+                            ->reactive()
+                            ->afterStateUpdated(function (string|null $state, Get $get, Set $set) {
+                                if (!$state) return;
+                                $book = Book::where('id', $state)->first();
+                                if ($book) {
+                                    if (!filled($get('title'))) {
+                                        $set('title', $book->title);
+                                        $set('subtitle', $book->subtitle);
+                                        $set('info', $book->summary);
+                                    }
+                                }
+                            })
+                            ->createOptionForm([
+                                TextInput::make('title')
+                                    ->label('Titre')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpan(2),
+                                TextInput::make('subtitle')
+                                    ->label('Sous-titre')
+                                    ->maxLength(255)
+                                    ->columnSpan(2),
+                                TextInput::make('authors')
+                                    ->label('Auteurs')
+                                    ->maxLength(255)
+                                    ->columnSpan(2),
+                                DatePicker::make('publication_date')
+                                    ->label('Date de publication')
+                                    ->default(\now())
+                                    ->closeOnDateSelection(true)
+                                    ->columnSpan(1),
+                                TextInput::make('link')
+                                    ->label('Lien')
+                                    ->maxLength(255)
+                                    ->columnSpan(1),
+                                FileUpload::make('image')
+                                    ->label('Image')
+                                    ->placeholder('Télécharger une image')
+                                    ->columnSpan(2),
+                                Select::make('publisher_id')
+                                    ->label('Éditeur')
+                                    ->relationship('publisher', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->label('Nom')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->columnSpan(1),
+                                        TextInput::make('website')
+                                            ->label('Site web')
+                                            ->url()
+                                            ->maxLength(255)
+                                            ->columnSpan(1),
+                                        Select::make('contact_id')
+                                            ->label('Contact')
+                                            ->relationship('contact', 'full_name')
+                                            ->placeholder('Sélectionner un contact')
+                                            ->searchable('name')
+                                            ->searchingMessage('Recherche un contact...')
+                                            ->preload()
+                                            ->createOptionForm([
+                                                Section::make('Identité')
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        TextInput::make('last_name')
+                                                            ->label('Nom')
+                                                            ->placeholder('Nom du contact')
+                                                            ->required()
+                                                            ->maxLength(255),
+                                                        TextInput::make('first_name')
+                                                            ->label('Prénom')
+                                                            ->placeholder('Prénom du contact')
+                                                            ->maxLength(255),
+                                                    ])->columnSpan(2),
+                                                Section::make('Coordonnnées')
+                                                    ->columns(3)
+                                                    ->columnSpanFull()
+                                                    ->schema([
+                                                        TextInput::make('email')
+                                                            ->label('Email')
+                                                            ->placeholder('Adresse email')
+                                                            ->email()
+                                                            ->maxLength(255),
+                                                        TextInput::make('phone1')
+                                                            ->label('Téléphone')
+                                                            ->placeholder('Numéro de téléphone')
+                                                            ->maxLength(50),
+                                                        TextInput::make('company')
+                                                            ->label('Structure')
+                                                            ->placeholder('Structure à laquelle appartient le contact')
+                                                            ->maxLength(255),
+                                                        TextInput::make('phone2')
+                                                            ->columnStart(2)
+                                                            ->hiddenLabel()
+                                                            ->placeholder('Numéro de téléphone')
+                                                            ->maxLength(50),
+                                                    ]),
+                                            ])
+                                            ->columnSpan(2),
+                                    ])
+                                    ->columnSpan(2),
+                                RichEditor::make('summary')
+                                    ->label('Résumé')
+                                    ->columnSpanFull()
+                                    ->toolbarButtons([
+                                        ['undo', 'redo'],
+                                        ['bold', 'italic', 'underline'],
+                                        ['bulletList', 'orderedList'],
+                                        ['superscript', 'subscript'],
+                                        'link',
+                                    ])
+                                    ->extraInputAttributes(['style' => 'min-height: 10vh; max-height: 20vh; overflow-y: auto;']),
+                            ]),
+                    ])
+                    ->columnSpan(4),
 
                 Section::make()
                     ->schema([
@@ -56,7 +178,33 @@ class EventForm
                         TextInput::make('subtitle')
                             ->label('Sous-titre')
                             ->placeholder('Sous-titre de l\'événement'),
-                    ])->columnSpan(4),
+                    ])->columnSpan(3),
+
+                Section::make('Image')
+                    ->columns(1)
+                    ->afterHeader(
+                        [
+                            Action::make('removeImage')
+                                ->label('')
+                                ->color('danger')
+                                ->icon('heroicon-o-trash')
+                                ->action(function ($record, $form) {
+                                    $record->image = null;
+                                    $record->save();
+                                    $form->fill([
+                                        'image' => null,
+                                    ]);
+                                })
+                                ->hidden(fn($record) => !$record || !$record->image),
+                        ]
+                    )
+                    ->schema([
+                        ImageInput::make('image')
+                            ->hiddenLabel()
+                            ->size('100px')
+                            ->live()
+                            ->reactive()
+                    ])->columnSpan(1),
 
                 RichEditor::make('info')
                     ->label('Description')
@@ -149,139 +297,6 @@ class EventForm
                             ->label('Annulé'),
                     ])->columnSpan(1),
 
-                Select::make('book_id')
-                    ->label('Ouvrage associé')
-                    ->relationship('book', 'title')
-                    ->placeholder('Sélectionner un ouvrage')
-                    ->searchable('title')
-                    ->searchingMessage('Recherche un ouvrage...')
-                    ->preload()
-                    ->reactive()
-                    ->afterStateUpdated(function (string|null $state, Get $get, Set $set) {
-                        if (!$state) return;
-                        $book = Book::where('id', $state)->first();
-                        if($book) {
-                            if (!filled($get('title'))) {
-                                $set('title', $book->title);
-                                $set('subtitle', $book->subtitle);
-                                $set('info', $book->summary);
-                            }
-                        }
-                    })
-                    ->createOptionForm([
-                        TextInput::make('title')
-                            ->label('Titre')
-                            ->required()
-                            ->maxLength(255)
-                            ->columnSpan(2),
-                        TextInput::make('subtitle')
-                            ->label('Sous-titre')
-                            ->maxLength(255)
-                            ->columnSpan(2),
-                        TextInput::make('authors')
-                            ->label('Auteurs')
-                            ->maxLength(255)
-                            ->columnSpan(2),
-                        DatePicker::make('publication_date')
-                            ->label('Date de publication')
-                            ->default(\now())
-                            ->closeOnDateSelection(true)
-                            ->columnSpan(1),
-                        TextInput::make('link')
-                            ->label('Lien')
-                            ->maxLength(255)
-                            ->columnSpan(1),
-                        FileUpload::make('image')
-                            ->label('Image')
-                            ->placeholder('Télécharger une image')
-                            ->columnSpan(2),
-                        Select::make('publisher_id')
-                            ->label('Éditeur')
-                            ->relationship('publisher', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->createOptionForm([
-                                TextInput::make('name')
-                                    ->label('Nom')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->columnSpan(1),
-                                TextInput::make('website')
-                                    ->label('Site web')
-                                    ->url()
-                                    ->maxLength(255)
-                                    ->columnSpan(1),
-                                Select::make('contact_id')
-                                    ->label('Contact')
-                                    ->relationship('contact', 'full_name')
-                                    ->placeholder('Sélectionner un contact')
-                                    ->searchable('name')
-                                    ->searchingMessage('Recherche un contact...')
-                                    ->preload()
-                                    ->createOptionForm([
-                                        Section::make('Identité')
-                                            ->columns(2)
-                                            ->schema([
-                                                TextInput::make('last_name')
-                                                    ->label('Nom')
-                                                    ->placeholder('Nom du contact')
-                                                    ->required()
-                                                    ->maxLength(255),
-                                                TextInput::make('first_name')
-                                                    ->label('Prénom')
-                                                    ->placeholder('Prénom du contact')
-                                                    ->maxLength(255),
-                                            ])->columnSpan(2),
-                                        Section::make('Coordonnnées')
-                                            ->columns(3)
-                                            ->columnSpanFull()
-                                            ->schema([
-                                                TextInput::make('email')
-                                                    ->label('Email')
-                                                    ->placeholder('Adresse email')
-                                                    ->email()
-                                                    ->maxLength(255),
-                                                TextInput::make('phone1')
-                                                    ->label('Téléphone')
-                                                    ->placeholder('Numéro de téléphone')
-                                                    ->maxLength(50),
-                                                TextInput::make('company')
-                                                    ->label('Structure')
-                                                    ->placeholder('Structure à laquelle appartient le contact')
-                                                    ->maxLength(255),
-                                                TextInput::make('phone2')
-                                                    ->columnStart(2)
-                                                    ->hiddenLabel()
-                                                    ->placeholder('Numéro de téléphone')
-                                                    ->maxLength(50),
-                                            ]),
-                                    ])
-                                    ->columnSpan(2),
-                                ])
-                                ->columnSpan(2),
-                        RichEditor::make('summary')
-                            ->label('Résumé')
-                            ->columnSpanFull()
-                            ->toolbarButtons([
-                                ['undo', 'redo'],
-                                ['bold', 'italic', 'underline'],
-                                ['bulletList', 'orderedList'],
-                                ['superscript', 'subscript'],
-                                'link',
-                            ])
-                            ->extraInputAttributes(['style' => 'min-height: 10vh; max-height: 20vh; overflow-y: auto;']),
-                    ])
-                    ->columnSpan(2),
-
-                // TextInput::make('image_'),
-                   
-                ImageInput::make('image')
-                    ->label('Image de l\'événement')
-                    ->size('100px')
-                    ->imgPath('/storage/public/events/')
-                    ->live()
-                    ->reactive()
-                    ->columnSpan(1),
             ]);
     }
 }

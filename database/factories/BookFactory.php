@@ -24,8 +24,9 @@ class BookFactory extends Factory
             'summary' => fake()->paragraph(),
             'publication_date' => fake()->date(),
             'publisher_id' => Publisher::query()->inRandomOrder()->first()->id,
+            'isbn' => fake()->isbn13(),
             'link' => fake()->url(),
-            'image' => fake()->imageUrl(200, 300, 'books'),
+            'image' => null,
         ];
     }
 }

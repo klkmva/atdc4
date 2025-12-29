@@ -23,7 +23,7 @@ class EventFactory extends Factory
             'subtitle' => fake()->sentence(),
             'info' => fake()->paragraph(10),
             'location_id' => null,
-            'image' => fake()->imageUrl(800, 600, 'events'),
+            'image' => null,
             'published' => fake()->boolean(99),
             'canceled' => false,
             'book_id' => null,

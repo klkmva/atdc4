@@ -68,7 +68,7 @@ class PublisherForm
                                     ->maxLength(50),
                             ]),
                     ])
-                    ->columnSpan(2),
+                    ->columnSpan(1),
             ]);
     }
 }

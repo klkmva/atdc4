@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Publishers\Tables;
 
 use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -23,7 +24,10 @@ class PublishersTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 //

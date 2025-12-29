@@ -26,7 +26,7 @@ class BookResource extends Resource
 
     protected static ?string $modelLabel = 'Ouvrage';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

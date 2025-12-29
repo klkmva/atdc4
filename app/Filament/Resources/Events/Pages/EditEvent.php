@@ -30,7 +30,7 @@ class EditEvent extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $image = $data['image'] ?? null;
+        // $image = $data['image'] ?? null;
         return parent::handleRecordUpdate($record, $data);
     }
 }

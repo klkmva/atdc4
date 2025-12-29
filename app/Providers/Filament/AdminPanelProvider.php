@@ -6,11 +6,11 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\View\PanelsRenderHook;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -54,8 +54,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandLogo(fn() => view('filament.logo'))
+            ->brandLogo(asset('icons/logo.png'))
             ->renderHook(PanelsRenderHook::TOPBAR_LOGO_AFTER, fn() => view('filament.brand'))
-            ->sidebarCollapsibleOnDesktop(true);
+            ->sidebarCollapsibleOnDesktop(true)
+            ->maxContentWidth(Width::Full);;
     }
 }

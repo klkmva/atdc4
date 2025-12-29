@@ -34,8 +34,10 @@ class ContactsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
             Action::make('pdf-member-list')

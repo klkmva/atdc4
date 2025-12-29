@@ -24,8 +24,10 @@ class LocationsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
                 DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 //

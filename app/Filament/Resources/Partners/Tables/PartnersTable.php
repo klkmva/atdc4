@@ -26,13 +26,10 @@ class PartnersTable
                 //
             ])
             ->recordActions([
-                EditAction::make()
-                    ->hiddenLabel()
-                    ->tooltip('Modifier le partenaire'),
                 DeleteAction::make()
-                    ->requiresConfirmation()
-                    ->hiddenLabel()
-                    ->tooltip('Supprimer le partenaire'),
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 //

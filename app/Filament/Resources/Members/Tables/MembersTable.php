@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Members\Tables;
 
 use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -37,7 +38,10 @@ class MembersTable
                     ->toggle(),
             ])
             ->recordActions([
-                EditAction::make(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 Action::make('pdf-member-list')
