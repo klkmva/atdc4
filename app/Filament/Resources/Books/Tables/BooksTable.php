@@ -15,6 +15,7 @@ class BooksTable
             ->columns([
                 TextColumn::make('title')
                     ->label('Titre')
+                    ->description(fn ($record) => html_entity_decode($record->subtitle))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('authors')

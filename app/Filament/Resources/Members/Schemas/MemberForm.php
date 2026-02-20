@@ -6,6 +6,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use \Filament\Forms\Components\TextInput;
 use \Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Textarea;
 
 class MemberForm
 {
@@ -34,6 +35,19 @@ class MemberForm
                 DatePicker::make('date')
                     ->label('Date d\'adhésion')
                     ->required(),
+                Section::make('Adresse')
+                    ->columns(3)
+                    ->schema([
+                        Textarea::make('address')
+                            ->label('Adresse')
+                            ->columnSpanFull(),
+                        TextInput::make('code')
+                            ->label('Code postal')
+                            ->columnSpan(1),
+                        TextInput::make('city')
+                            ->label('Commune')
+                            ->columnSpan(2),
+                    ])->columnSpanFull(),
             ]);
     }
 }

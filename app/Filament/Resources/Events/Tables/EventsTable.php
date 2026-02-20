@@ -6,6 +6,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class EventsTable
 {
@@ -13,10 +14,12 @@ class EventsTable
     {
         return $table
             ->columns([
-                TextColumn::make('date')
+                TextColumn::make('shortdate')
                     ->label('Date')
-                    ->date('d/m/Y')
-                    ->sortable(),
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query
+                            ->orderBy('date', $direction);
+                    }),
                 TextColumn::make('title')
                     ->label('Titre')
                     ->searchable(),

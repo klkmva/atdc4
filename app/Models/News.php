@@ -15,6 +15,7 @@ class News extends Model
     
     protected $fillable = [
         'date',
+        'time',
         'title',
         'info',
         'image',
@@ -23,7 +24,7 @@ class News extends Model
     protected function longDate(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => ucFirst(Carbon::parse($value)->locale('fr_FR')->isoFormat('dddd Do MMMM YYYY'))
+            get: fn($value) => ucFirst(Carbon::parse($value)->locale('fr_FR')->isoFormat('dddd Do MMMM YYYY')) . ($this->time ? ' - ' . $this->time : '')
         );
     }
 
@@ -33,46 +34,33 @@ class News extends Model
 
         static::saving(function ($news) {
             $image = $news->image;
-            $path = '/storage/images/news/';
-            if (preg_match('/^data:.*/', $image)) {
+            if ($image && preg_match('/^data:.*/', $image)) {
                 try {
                     $a = explode(',', $image);
                     $b = explode(";", $a[0]);
                     $c = explode(":", $b[0]);
                     $d = explode("/", $c[1]);
-                    $ext = pathinfo($d[1], PATHINFO_EXTENSION);
+                    $ext = $d[1];
                     $name = uniqid() . '.' . $ext;
                     $encoded = $a[count($a) - 1];
                     $decoded = base64_decode($encoded);
-                    try {
-                        $fp = fopen($path . $name, 'w');
-                        fwrite($fp, $decoded);
-                        fclose($fp);
-                        $news->image = $path . $name;
-                    } catch (\Exception $e) {
-                        if (Storage::disk('public')->put('/news/' . $name, $decoded) === false) {
-                            throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
-                        };
-                        $news->image = Storage::url('/news/' . $name);
-                    }
+                    if (Storage::disk('public')->put('/images/news/' . $name, $decoded) === false) {
+                        throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
+                    };
+                    $news->image = Storage::url('/images/news/' . $name);
 
                     Notification::make()
                         ->title('[' . $name . '] Image uploadée avec succès.')
                         ->success()
                         ->send();
                 } catch (\Exception $e) {
+                    $news->image = null;
                     Notification::make()
                         ->title($e->getMessage())
                         ->danger()
                         ->send();
-                    return false;
+                    return true;
                 }
-            } else {
-                Notification::make()
-                    ->title($image)
-                    ->success()
-                    ->send();
-                return false;
             }
             return true;
         });

@@ -1,5 +1,10 @@
+@blaze
+
+@props([
+    'item',
+])
 @use('\Filament\Forms\Components\RichEditor\RichContentRenderer', 'render')
-<div class="w-full">
-    <div class="mb-8 ml-[5px] text-2xl text-amber-100 font-light">{{ render::make($event->long_date) }}</div>
-    <x-event.event-card :event="$event" />
+<div class="w-full relative">
+    <x-date>{{ $item->long_date }}@if ($item->location) &#150; {{ $item->location->name }}@endif</x-date>
+    <x-event.card :event="$item" />
 </div>

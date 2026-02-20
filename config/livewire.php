@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'layout' => 'components.layouts.app',
+    'component_layout' => 'layout::app',
 
     /*
     |---------------------------------------------------------------------------
@@ -50,8 +50,24 @@ return [
     |
     */
 
-    'lazy_placeholder' => null,
+    'component_placeholder' => 'livewire.placeholder',
+    'component_locations' => [
+        resource_path('views/components'),
+        resource_path('views/livewire'),
+    ],
 
+    'component_namespaces' => [
+        'layouts' => resource_path('views/layout'),
+        'pages' => resource_path('views/pages'),
+    ],
+
+    'make_command' => [
+        'type' => 'sfc',  // Options: 'sfc', 'mfc', or 'class'
+        'emoji' => true,   // Whether to use ⚡ emoji prefix
+    ],
+
+    'csp_safe' => false,
+    
     /*
     |---------------------------------------------------------------------------
     | Temporary File Uploads
@@ -156,7 +172,7 @@ return [
     |
     */
 
-    'smart_wire_keys' => false,
+    'smart_wire_keys' => true,
 
     /*
     |---------------------------------------------------------------------------

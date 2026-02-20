@@ -21,13 +21,20 @@ class DatabaseSeeder extends Seeder
     {
         News::factory()->count(20)->create();
         Contact::factory()->count(50)->create();
-        Location::factory()->count(5)->create();
         Member::factory()->count(70)->create();
-        Partner::factory()->count(5)->create();
         Publisher::factory()->count(10)->create();
-        Speaker::factory()->count(30)->create();
         Book::factory()->count(10)->create();
-        $seeder = new EventSeeder();
-        $seeder->run();
+        $loseeder = new LocationSeeder();
+        $loseeder->run();
+        $paseeder = new PartnerSeeder();
+        $paseeder->run();
+        $spseeder = new SpeakerSeeder();
+        $spseeder->run();
+        $evseeder = new EventSeeder();
+        $evseeder->run();
+        $evpaseeder = new EventPartnerSeeder();
+        $evpaseeder->run();
+        $evspseeder = new EventSpeakerSeeder();
+        $evspseeder->run();
     }
 }

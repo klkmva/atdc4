@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Storage;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Speaker extends Model
 {
@@ -29,52 +30,67 @@ class Speaker extends Model
         return $this->belongsTo(Contact::class, 'contact_id');
     }
 
+    protected function firstName(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+        );
+    }
+
+    protected function lastName(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+        );
+    }
+
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+        );
+    }
+
+    protected function info(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+        );
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::saving(function ($speaker) {
             $image = $speaker->image;
-            $path = '/storage/images/speakers/';
-            if (preg_match('/^data:.*/', $image)) {
+            if ($image && preg_match('/^data:.*/', $image)) {
                 try {
                     $a = explode(',', $image);
                     $b = explode(";", $a[0]);
                     $c = explode(":", $b[0]);
                     $d = explode("/", $c[1]);
-                    $ext = pathinfo($d[1], PATHINFO_EXTENSION);
+                    $ext = $d[1];
                     $name = uniqid() . '.' . $ext;
                     $encoded = $a[count($a) - 1];
                     $decoded = base64_decode($encoded);
-                    try {
-                        $fp = fopen($path . $name, 'w');
-                        fwrite($fp, $decoded);
-                        fclose($fp);
-                        $speaker->image = $path . $name;
-                    } catch (\Exception $e) {
-                        if (Storage::disk('public')->put('/speakers/' . $name, $decoded) === false) {
-                            throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
-                        };
-                        $speaker->image = Storage::url('/speakers/' . $name);
-                    }
+                    if (Storage::disk('public')->put('/images/speakers/' . $name, $decoded) === false) {
+                        throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
+                    };
+                    $speaker->image = '/storage/images/speakers/' . $name;
 
                     Notification::make()
                         ->title('[' . $name . '] Image uploadée avec succès.')
                         ->success()
                         ->send();
                 } catch (\Exception $e) {
+                    $speaker->image = null;
                     Notification::make()
                         ->title($e->getMessage())
                         ->danger()
                         ->send();
-                    return false;
+                    return true;
                 }
-            } else {
-                Notification::make()
-                    ->title($image)
-                    ->success()
-                    ->send();
-                return false;
             }
             return true;
         });

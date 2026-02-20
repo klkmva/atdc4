@@ -12,15 +12,16 @@
         "blade-ui-kit/blade-icons": "^1.8",
         "codeat3/blade-google-material-design-icons": "^1.20",
         "codeat3/blade-phosphor-icons": "^2.3",
-        "eightynine/filament-reports": "^4.0",
-        "filament/filament": "^4.0",
+        "filament/filament": "~5.0",
         "jimmyjs/laravel-report-generator": "^2.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "livewire/flux": "^2.9"
+        "livewire/flux": "^2.9",
+        "watheqalshowaiter/filament-sticky-table-header": "~1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "filament/upgrade": "^5.0",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",

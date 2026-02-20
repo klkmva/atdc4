@@ -4,11 +4,10 @@ namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
-use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\View\PanelsRenderHook;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
 use Filament\Widgets\AccountWidget;
@@ -18,6 +17,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use WatheqAlshowaiter\FilamentStickyTableHeader\StickyTableHeaderPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -25,8 +25,10 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->domain(config('app.url'))
             ->id('admin')
             ->path('admin')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -48,15 +50,22 @@ class AdminPanelProvider extends PanelProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
-                DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
             ->brandLogo(asset('icons/logo.png'))
-            ->renderHook(PanelsRenderHook::TOPBAR_LOGO_AFTER, fn() => view('filament.brand'))
+            ->brandLogoHeight('40px')
             ->sidebarCollapsibleOnDesktop(true)
-            ->maxContentWidth(Width::Full);;
+            ->maxContentWidth(Width::Full)
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Planning')
+                    ->collapsed(),
+            ])
+            ->plugins([
+                StickyTableHeaderPlugin::make(),
+            ]);
     }
 }

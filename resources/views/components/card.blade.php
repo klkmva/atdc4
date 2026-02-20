@@ -1,13 +1,22 @@
+@blaze
+
 @props([
-    'width' => 'w-full',
-    'margin' => 'm-0',
-    'shadow' => '',
-    ])
-<article @class([
-    "rounded-md p-3 sm:p-6 bg-zinc-600 min-h-max" => true,
-    $width => true,
+'size' => 'w-full',
+'margin' => 'm-0',
+'padding' => 'p-3 sm:p-6',
+'bg' => 'dark:bg-zinc-600 bg-zinc-200',
+'border' => '',
+'display' => '',
+'class' => '',
+])
+<article @class([ "rounded-md" => true,
+    $size => $class == '',
     $margin => true,
-    $shadow => $shadow != '',
+    $padding => true,
+    $bg => true,
+    $display => true,
+    $border => $border != '',
+    $class => true,
     ])
     {{ $attributes }}>
     {{ $slot }}

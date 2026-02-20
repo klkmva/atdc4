@@ -7,10 +7,10 @@ use App\Filament\Resources\Books\Pages\EditBook;
 use App\Filament\Resources\Books\Pages\ListBooks;
 use App\Filament\Resources\Books\Schemas\BookForm;
 use App\Filament\Resources\Books\Tables\BooksTable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use App\Models\Book;
 
@@ -43,6 +43,20 @@ class BookResource extends Resource
         return [
             //
         ];
+    }
+
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => html_entity_decode($value)
+        );
+    }
+
+    protected function subtitle(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => html_entity_decode($value)
+        );
     }
 
     public static function getPages(): array

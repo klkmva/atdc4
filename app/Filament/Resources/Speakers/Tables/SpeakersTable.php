@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Speakers\Tables;
 
 use Filament\Actions\DeleteAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 

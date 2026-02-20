@@ -17,7 +17,7 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => fake()->dateTimeBetween('-12 month', '+6 month'),
+            'date' => fake()->number(1, 10000)->unique(),
             'time' => '19:00',
             'title' => fake()->sentence(),
             'subtitle' => fake()->sentence(),

@@ -2,14 +2,24 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return true;
+        }
+        return true;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +27,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
     ];
@@ -32,6 +43,14 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    /**
+     * Get the user's initials
+     */
+    public function initials(): string
+    {
+        return mb_substr($this->first_name, 0, 1) . mb_substr($this->last_name, 0, 1);
+    }
+    
     /**
      * Get the attributes that should be cast.
      *

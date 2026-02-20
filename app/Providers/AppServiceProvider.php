@@ -9,6 +9,9 @@ use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\view;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,12 +22,15 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
+    
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        DB::listen(function ($query) {
+            Log::info($query->sql);
+        });
         FilamentTimezone::set('Europe/Paris');
         FilamentAsset::register([
             Css::make('philosopher-font', 'https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap'),
@@ -39,12 +45,13 @@ class AppServiceProvider extends ServiceProvider
         );
         // Bouton de sélection mode sombre/clair
         FilamentView::registerRenderHook(
-            PanelsRenderHook::TOPBAR_END,
-            fn () => view('filament.app.components.dark')
+            PanelsRenderHook::TOPBAR_END, fn() => view('filament.app.components.dark')
         );
-        FilamentAsset::register([
-            Js::make('image-input', __DIR__ . '/../../resources/js/imageInput.js'),
-        ]);
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::TOPBAR_LOGO_AFTER,
+            fn() => view('filament.brand')
+        );
+        View::addNamespace('layout', resource_path('views/layout'));
     }
 
 }

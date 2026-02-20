@@ -10,6 +10,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use App\Filament\Forms\Components\ImageInput;
 use Filament\Actions\Action;
+use App\Filament\Resources\Publishers\Schemas\PublisherForm;
+use Filament\Schemas\Components\Grid;
 
 class BookForm
 {
@@ -22,15 +24,13 @@ class BookForm
                     ->schema([
                         TextInput::make('title')
                             ->label('Titre')
-                            ->required()
-                            ->maxLength(255),
+                            ->required(),
                         TextInput::make('subtitle')
-                            ->label('Sous-titre')
-                            ->maxLength(255),
+                            ->label('Sous-titre'),
                         TextInput::make('authors')
                             ->label('Auteurs')
-                            ->maxLength(255)
-                    ])->columnSpan(3),
+                    ])
+                    ->columnSpan(3),
                 Section::make('Image')
                     ->columns(1)
                     ->afterHeader(
@@ -50,12 +50,13 @@ class BookForm
                         ]
                     )
                     ->schema([
-                    ImageInput::make('image')
-                        ->hiddenLabel()
-                        ->size('180px')
-                        ->live()
-                        ->reactive()
-                    ])->columnSpan(1),
+                        ImageInput::make('image')
+                            ->hiddenLabel()
+                            ->size('180px')
+                            ->live()
+                            ->reactive()
+                    ])
+                    ->columnSpan(1),
                 DatePicker::make('publication_date')
                     ->label('Date de publication')
                     ->default(\now())
@@ -63,7 +64,6 @@ class BookForm
                     ->columnSpan(1),
                 TextInput::make('link')
                     ->label('Lien')
-                    ->maxLength(255)
                     ->columnSpan(1),
                 Select::make('publisher_id')
                     ->label('Éditeur')
@@ -72,62 +72,8 @@ class BookForm
                     ->searchable()
                     ->preload()
                     ->createOptionForm([
-                        TextInput::make('name')
-                            ->label('Nom')
-                            ->required()
-                            ->maxLength(255)
-                            ->columnSpan(1),
-                        TextInput::make('website')
-                            ->label('Site web')
-                            ->url()
-                            ->maxLength(255)
-                            ->columnSpan(1),
-                        Select::make('contact_id')
-                            ->label('Contact')
-                            ->relationship('contact', 'full_name')
-                            ->placeholder('Sélectionner un contact')
-                            ->searchable('name')
-                            ->searchingMessage('Recherche un contact...')
-                            ->preload()
-                            ->createOptionForm([
-                                Section::make('Identité')
-                                    ->columns(2)
-                                    ->schema([
-                                        TextInput::make('last_name')
-                                            ->label('Nom')
-                                            ->placeholder('Nom du contact')
-                                            ->required()
-                                            ->maxLength(255),
-                                        TextInput::make('first_name')
-                                            ->label('Prénom')
-                                            ->placeholder('Prénom du contact')
-                                            ->maxLength(255),
-                                    ])->columnSpan(2),
-                                Section::make('Coordonnnées')
-                                    ->columns(3)
-                                    ->columnSpanFull()
-                                    ->schema([
-                                        TextInput::make('email')
-                                            ->label('Email')
-                                            ->placeholder('Adresse email')
-                                            ->email()
-                                            ->maxLength(255),
-                                        TextInput::make('phone1')
-                                            ->label('Téléphone')
-                                            ->placeholder('Numéro de téléphone')
-                                            ->maxLength(50),
-                                        TextInput::make('company')
-                                            ->label('Structure')
-                                            ->placeholder('Structure à laquelle appartient le contact')
-                                            ->maxLength(255),
-                                        TextInput::make('phone2')
-                                            ->columnStart(2)
-                                            ->hiddenLabel()
-                                            ->placeholder('Numéro de téléphone')
-                                            ->maxLength(50),
-                                    ]),
-                                ])
-                                ->columnSpan(2),
+                        Grid::make([2])
+                            ->schema(PublisherForm::configure(new Schema())->getComponents())
                     ])
                     ->columnSpan(1),
                 TextInput::make('isbn')
@@ -136,7 +82,6 @@ class BookForm
                     ->columnSpan(1),
                 RichEditor::make('summary')
                     ->label('Résumé')
-                    ->columnSpanFull()
                     ->toolbarButtons([
                         ['undo', 'redo'],
                         ['bold', 'italic', 'underline'],
@@ -144,7 +89,8 @@ class BookForm
                         ['superscript', 'subscript'],
                         'link',
                     ])
-                    ->extraInputAttributes(['style' => 'min-height: 10vh; max-height: 20vh; overflow-y: auto;']),
+                    ->extraInputAttributes(['style' => 'min-height: 10vh; max-height: 20vh; overflow-y: auto;'])
+                    ->columnSpanFull(),
             ])
             ->columns(4);
     }

@@ -9,6 +9,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use App\Filament\Forms\Components\ImageInput;
 use Filament\Actions\Action;
+use App\Filament\Resources\Contacts\Schemas\ContactForm;
+use Filament\Schemas\Components\Grid;
 
 class SpeakerForm
 {
@@ -72,6 +74,10 @@ class SpeakerForm
                     ->label('Contact')
                     ->relationship('contact', 'full_name')
                     ->placeholder('Sélectionner un contact')
+                    ->createOptionForm([
+                        Grid::make([2])
+                            ->schema(ContactForm::configure(new Schema())->getComponents())
+                    ])
                     ->columnSpan(2),
             ]);
     }

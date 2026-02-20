@@ -72,7 +72,7 @@ class AppPanelProvider extends PanelProvider
             ->subNavigationPosition(SubNavigationPosition::Top)
             ->spa()
             ->topNavigation()
-            ->brandLogo(fn() => view('filament.logo'))
+            // ->brandLogo(fn() => view('filament.logo'))
             ->renderHook(PanelsRenderHook::TOPBAR_LOGO_AFTER, fn() => view('filament.brand'))
             // ->renderHook(PanelsRenderHook::BODY_END, fn () => view('filament.app.init'))
             ->maxContentWidth(Width::Full)

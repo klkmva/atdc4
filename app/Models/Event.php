@@ -15,7 +15,7 @@ class Event extends Model
     use HasFactory;
     
     protected $fillable = [
-        'date',
+        'date_id',
         'time',
         'title',
         'subtitle',
@@ -55,6 +55,13 @@ class Event extends Model
         return $this->belongsToMany(Partner::class)->withPivot([])->using(EventPartner::class);
     }
 
+    protected function shortdate(): Attribute 
+    {
+        return Attribute::make(
+            get: fn() => ucFirst(Carbon::parse($this->date)->locale('fr_FR')->isoFormat('ddd Do MMM YYYY'))
+        );
+    }
+
     protected function title(): Attribute
     {
         return Attribute::make(
@@ -72,7 +79,7 @@ class Event extends Model
     protected function longDate(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => ucFirst(Carbon::parse($value)->locale('fr_FR')->isoFormat('dddd Do MMMM YYYY'))
+            get: fn () => ucFirst(Carbon::parse($this->date)->locale('fr_FR')->isoFormat('dddd Do MMMM YYYY')) .' - ' . $this->time
         );
     }
 
@@ -88,50 +95,35 @@ class Event extends Model
         parent::boot();
 
         static::saving(function ($event) {
-                $image = $event->image;
-                $path = '/storage/images/events/';
-                if (preg_match('/^data:.*/', $image)) {
-                    try {
-                        $a = explode(',', $image);
-                        $b = explode(";", $a[0]);
-                        $c = explode(":", $b[0]);
-                        $d = explode("/", $c[1]);
-                        $ext = pathinfo($d[1], PATHINFO_EXTENSION);
-                        $name = uniqid() . '.' . $ext;
-                        $encoded = $a[count($a) - 1];
-                        $decoded = base64_decode($encoded);
-                        try {
-                            $fp = fopen($path . $name, 'w');
-                            fwrite($fp, $decoded);
-                            fclose($fp);
-                            $event->image = $path . $name;
-                        }
-                        catch (\Exception $e) {
-                            if (Storage::disk('public')->put('/events/' . $name, $decoded) === false) {
-                                throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
-                            };
-                            $event->image = Storage::url('/events/' . $name);
-                        }
+            $image = $event->image;
+            if ($image && preg_match('/^data:.*/', $image)) {
+                try {
+                    $a = explode(',', $image);
+                    $b = explode(";", $a[0]);
+                    $c = explode(":", $b[0]);
+                    $d = explode("/", $c[1]);
+                    $ext = $d[1];
+                    $name = uniqid() . '.' . $ext;
+                    $encoded = $a[count($a) - 1];
+                    $decoded = base64_decode($encoded);
+                    if (Storage::disk('public')->put('/images/events/' . $name, $decoded) === false) {
+                        throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
+                    };
+                    $event->image = Storage::url('/images/events/' . $name);
 
-                        Notification::make()
-                            ->title('[' . $name . '] Image uploadée avec succès.')
-                            ->success()
-                            ->send();
-                    } catch (\Exception $e) {
-                        Notification::make()
-                            ->title($e->getMessage())
-                            ->danger()
-                            ->send();
-                        return false;
-                    }
-                }
-                else {
                     Notification::make()
-                        ->title($image)
+                        ->title('[' . $name . '] Image uploadée avec succès.')
                         ->success()
                         ->send();
-                        return false;
-                }
+                } catch (\Exception $e) {
+                    $event->image = null;
+                    Notification::make()
+                        ->title($e->getMessage())
+                        ->danger()
+                        ->send();
+                    return true;
+                }   
+            }
             return true;
         });
     }

@@ -3,7 +3,7 @@
 use App\Models\Event;
 use App\Models\News;
 
-$event = Event::where('date', '>=', \now())->orderBy('date')->first();
+$event = Event::where('date', '<=', \now())->orderBy('date')->first();
 
 $actus = News::where('date', '<=', \now())->orderBy('date', 'desc');
 

@@ -4,9 +4,8 @@ namespace App\Filament\Resources\Locations\Pages;
 
 use App\Filament\Resources\Locations\LocationResource;
 use Filament\Resources\Pages\CreateRecord;
-use PgSql\Lob;
 
-class Createlocation extends CreateRecord
+class CreateLocation extends CreateRecord
 {
     use \App\RedirectIndex;
 
