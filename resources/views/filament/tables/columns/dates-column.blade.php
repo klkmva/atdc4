@@ -1,19 +1,27 @@
 @php
+use Carbon\Carbon;
 $dates = $record->dates;
 @endphp
-<script>
-    async function clicked(el) {
-        console.log(el.dataset.date, el.dataset.option);
-        if (window.confirm('test')) {
-            $result = await fetch();
-            console.log($result);
-        }
-    }
-</script>
-<div {{ $getExtraAttributeBag() }} style="margin-block: 10px;" title="Valider l'option">
+<div style="margin-block: 10px; margin-inline: 5px" validate>
     @foreach ($dates as $date)
-    <a style="cursor: pointer; color:aqua;" href="{{ route('validate', ['date_id'=> $date->id, 'option_id' => $record->id]) }}">
-        {{ $date->date }}
-    </a><br />
+    <x-filament::badge class="first-of-type:mt-0 mt-2 cursor-pointer" title="Valider l'option" onclick="clicked({{ $date->id }})">
+        {{ Carbon::parse($date->date)->locale('fr_FR')->isoFormat('ddd Do/MM/YYYY') }}
+    </x-filament::badge>
+    <a style="display: none" href="{{ route('validate', ['data' => $date->id . '-' . $record->id]) }}" id="link_{{ $date->id }}"></a><br />
     @endforeach
 </div>
+<script>
+    async function clicked(id) {
+        if (window.confirm('test')) {
+            document.getElementById('link_' + id).click();
+        }
+    }
+    [...document.querySelectorAll('div[validate]')].forEach((div) => {
+        const chld = div.firstChild;
+        if (chld.tagName == 'A') {
+            const content = chld.innerHTML;
+            chld.remove();
+            div.innerHTML = content + div.innerHTML;
+        }
+    })
+</script>

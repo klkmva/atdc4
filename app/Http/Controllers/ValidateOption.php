@@ -2,55 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Filament\Resources\Events\EventResource;
+use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\Date;
-use App\Models\Event;
+use App\Models\DateOption;
 use App\Models\Option;
+use App\Models\Event;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
-
 class ValidateOption extends Controller
 {
-    // public $option_id =null;
-    // public $date_id = null;
-
-    public function validation($option_id, $date_id)
+    public function validation($data)
     {
-        Log::debug(\sprintf('invoke: %s/%s', '', $date_id, $option_id));
-        $option = Option::find($option_id);
-        $date = Date::find($date_id);
-        $book = Book::find($option->book_id);
+        $explode = \explode('-', $data);
+        if (sizeof($explode) == 2) {
+            $option_id = $explode[1];
+            $date_id = $explode[0];
+            $option = Option::find($option_id);
+            $date = Date::find($date_id);
+            $book = Book::find($option->book_id);
+            if ($book) {
+                $arr = [
+                    'date' => Carbon::parse($date->date),
+                    'title' => $book->title,
+                    'subtitle' => $book->subtitle,
+                    'time' => env('DEFAULT_TIME', '19:00'),
+                    'info' => $book->summary,
+                    'book_id' => $book->id,
+                    'location_id' => env('DEFAULT_LOCATION', 1),
+                    'image' => $book->image,
+                    'published' => false,
+                    'canceled' => false,
+                    'created_at' => \now(),
+                ];
+                // Création de l'évènement correspondant à l'option
+                $event = Event::create($arr);
 
-        if ($book) {
-            // Création de l'évènement correspondant à l'option
-            $event = Event::create([
-                'title' => $book->title,
-                'subtitle' => $book->subtitle,
-                'date' => $date->date,
-                'time' => env('DEFAULT_TIME', '19:00'),
-                'info' => $book->summary,
-                'book_id' => $book->id,
-                'location_id' => env('DEFAULT_LOCATION', 1),
-                'image' => $book->image,
-                'published' => false,
-                'canceled' => false,
-                'created_at' => \now(),
-            ]);
+                // Suppression des options sur la date
+                DateOption::where('date_id', $date->id)->delete();
 
-            // Suppression des options sur la date
-            $date->options()->delete();
-
-            // Changement du status de la date
-            $date->status = 3;
-            $date->save();
-
-            return view('events.edit')->with('event', $event->id);
-        }
-        else {
+                // return to_route(EventResource::getUrl('edit', ['record' => $event->id]));
+                return Redirect::route(EventResource::getUrl('edit'), ['record' => $event->id], 302);
+            } else {
+                Notification::make()
+                    ->title('Vous devez associer un ouvrage à l\'option')
+                    ->duration(3000)
+                    ->send();
+            }
+        } else {
             Notification::make()
-                ->title('Vous devez associer un ouvrage à l\'option')
+                ->title('Url incorrecte !')
                 ->duration(3000)
                 ->send();
         }

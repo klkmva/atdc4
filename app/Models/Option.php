@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\HtmlString;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Option extends Model
-{
-    use SoftDeletes;
-    
+{    
     protected $fillable = [
         'user_id',
         'book_id',

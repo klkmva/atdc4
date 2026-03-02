@@ -20,4 +20,16 @@ class DateOption extends Pivot
     {
         return $this->belongsTo(Option::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($event) {
+            $date_id = $event->date_id;
+            $date = Date::find($date_id);
+            $date->status = 1;
+            $date->save();
+        });
+    }
 }

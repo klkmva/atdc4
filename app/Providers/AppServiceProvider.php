@@ -28,9 +28,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        DB::listen(function ($query) {
-            Log::info($query->sql);
-        });
+        // DB::listen(function ($query) {
+        //     Log::info($query->sql);
+        // });
         FilamentTimezone::set('Europe/Paris');
         FilamentAsset::register([
             Css::make('philosopher-font', 'https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap'),

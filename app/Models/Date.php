@@ -28,6 +28,13 @@ class Date extends Model
         );
     }
 
+    protected function shortdate(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => ucFirst(Carbon::parse($this->date)->locale('fr_FR')->isoFormat('ddd Do MMM YYYY'))
+        );
+    }
+
     protected function opts(): Attribute
     {
         return Attribute::make(

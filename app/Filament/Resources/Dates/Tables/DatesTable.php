@@ -9,6 +9,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use App\Filament\Tables\Columns\HtmlColumn;
 use App\Filament\Tables\Columns\OptionsColumn;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
 class DatesTable
 {
@@ -18,7 +20,8 @@ class DatesTable
             ->columns([
                 TextColumn::make('date')
                     ->label('Date')
-                    ->date('d M Y')
+                    ->date('D d M Y')
+                    ->sortable()
                     ->width('20%'),
                 IconColumn::make('status')
                     ->label('Status')
@@ -29,10 +32,13 @@ class DatesTable
                     ->label('Options')
                     ->badge(),
                 OptionsColumn::make('opts')
-                    ->label('Valider une option')
+                    ->label('Options')
             ])
             ->filters([
-                //
+                Filter::make('Dates libres')
+                    ->query(fn(Builder $query): Builder => $query->where('status', '<', 2)),
+                Filter::make('Dates avec option(s)')
+                    ->query(fn(Builder $query): Builder => $query->where('status', 1))
             ])
             ->recordActions([
                 DeleteAction::make(),

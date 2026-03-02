@@ -6,19 +6,6 @@
 
 :root
 {
-    /* Background */
-    --gray-50: 250, 250, 250;
-    --gray-100: 244, 244, 245;
-    --gray-200: 228, 228, 231;
-    --gray-300: 212, 212, 216;
-    --gray-400: 161, 161, 170;
-    --gray-500: 113, 113, 122;
-    --gray-600: 82, 82, 91;
-    --gray-700: 63, 63, 70;
-    --gray-800: 39, 39, 42;
-    --gray-900: 24, 24, 27;
-    --gray-950: 9, 9, 11;
-
     --primary-50: oklch(0.987 0.022 95.277);
     --primary-100: oklch(0.962 0.059 95.617);
     --primary-200: oklch(0.924 0.12 95.746);
@@ -44,6 +31,18 @@
 }
 
 @layer components {
+    .fi-header-heading
+    {
+        font-size: var(--text-2xl) !important;
+    }
+    .fi-global-search-ctn
+    {
+        display: none !important;
+    }
+    .fi-breadcrumbs-item-label
+    {
+        font-weight: var(--font-weight-normal) !important;
+    }
     .fi-modal-window
     {
         background-color: var(--color-white) !important;

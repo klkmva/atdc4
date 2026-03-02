@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title', 25);
             $table->longText('content');
-            $table->string('menu')
-                ->length('25')
-                ->default('');
+            $table->foreignId('menu_id')
+                ->references('id')
+                ->on('menus')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
+
         });
     }
 

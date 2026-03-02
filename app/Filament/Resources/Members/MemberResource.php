@@ -12,6 +12,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class MemberResource extends Resource
 {
@@ -25,7 +26,9 @@ class MemberResource extends Resource
 
     protected static ?string $modelLabel = 'Adhérent';
 
-    protected static ?int $navigationSort = 9;
+    protected static string | UnitEnum | null $navigationGroup = 'Gestion';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

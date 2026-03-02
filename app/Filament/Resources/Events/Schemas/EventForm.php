@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Events\Schemas;
 use App\Models\Book;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TimePicker;
@@ -41,11 +40,12 @@ class EventForm
                                 ->schema([
                                     DatePicker::make('date')
                                         ->label('date')
-                                        ->closeOnDateSelection(true)
                                         ->required()
+                                        ->closeOnDateSelection(true)
                                         ->displayFormat('ddd d/m/Y')
                                         ->locale('fr')
-                                        ->datalist(fn() => Date::where('status', '<', 3)->pluck('date'))
+                                        ->disabled(fn($rawState) => $rawState < \now())
+                                        ->displayFormat('ddd d/m/Y')
                                         ->columnSpan(1),
                                     TimePicker::make('time')
                                         ->label('Heure de début')
@@ -75,13 +75,13 @@ class EventForm
                                             if (!$state) return;
                                             $book = Book::where('id', $state)->first();
                                             if ($book) {
-                                                if (!filled($get('title'))) {
+                                                if (!$get('title')->filled()) {
                                                     $set('title', $book->title);
                                                 }
-                                                if (!filled($get('subtitle'))) {
+                                                if (!$get('subtitle')->filled()) {
                                                     $set('subtitle', $book->subtitle);
                                                 }
-                                                if (!filled($get('info'))) {
+                                                if (!$get('info')->filled()) {
                                                     $set('info', $book->summary);
                                                 }
                                             }

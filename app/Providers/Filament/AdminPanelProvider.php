@@ -32,6 +32,9 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => Color::Amber,
+                'danger' => Color::Red,
+                'warning' => Color::Yellow,
+                'success' => Color::Emerald,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -61,8 +64,17 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->navigationGroups([
                 NavigationGroup::make()
+                    ->label('Références')
+                    ->collapsed(true),
+                NavigationGroup::make()
+                    ->label('Gestion')
+                    ->collapsed(true),
+                NavigationGroup::make()
                     ->label('Planning')
-                    ->collapsed(),
+                    ->collapsed(true),
+                NavigationGroup::make()
+                    ->label('Site')
+                    ->collapsed(true),
             ])
             ->plugins([
                 StickyTableHeaderPlugin::make(),

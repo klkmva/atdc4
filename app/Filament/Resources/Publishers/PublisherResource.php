@@ -12,6 +12,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PublisherResource extends Resource
 {
@@ -25,7 +26,9 @@ class PublisherResource extends Resource
 
     protected static ?string $modelLabel = 'Éditeur';
 
-    protected static ?int $navigationSort = 6;
+    protected static string | UnitEnum | null $navigationGroup = 'Références';
+
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {
