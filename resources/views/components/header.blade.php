@@ -20,13 +20,9 @@
         <flux:modal.trigger name="search">
             <flux:icon.magnifying-glass class="me-5" x-on:click="$flux.modal('search').show()" />
         </flux:modal.trigger>
-        <flux:icon.moon class="self-end hidden dark:inline" x-data x-on:click="$flux.dark = ! $flux.dark" />
-        <flux:icon.sun class="self-end dark:hidden" x-data x-on:click="$flux.dark = ! $flux.dark" />
+        <flux:icon.sun class="self-end hidden dark:inline" x-data x-on:click="$flux.dark = ! $flux.dark" />
+        <flux:icon.moon class="self-end dark:hidden" x-data x-on:click="$flux.dark = ! $flux.dark" />
         <flux:sidebar.collapse class="in-data-flux-sidebar-on-desktop:not-in-data-flux-sidebar-collapsed-desktop:-mr-2" />
     </flux:sidebar.header>
-    <flux:sidebar.nav>
-        <flux:sidebar.item href="/" current>Programme</flux:sidebar.item>
-        <flux:sidebar.item href="/archives">Archives</flux:sidebar.item>
-        <flux:sidebar.item href="/asso">L'association</flux:sidebar.item>
-    </flux:sidebar.nav>
+    <livewire:sidemenu />
 </flux:sidebar>

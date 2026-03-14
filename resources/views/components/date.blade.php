@@ -6,4 +6,4 @@
         <circle cx="8" cy="12" r="10" fill="red" />
         <rect x=0 y=2 width=10 height="20" fill="red" />
     </svg></div>
-<div class="mb-8 ml-3 text-2xl text-amber-900 dark:text-amber-400 font-semibold">{{ $slot }}</div>
+<div class="mb-8 ml-3 text-xl sm:text-2xl text-stone-800 dark:text-stone-300 font-semibold">{{ $slot }}</div>

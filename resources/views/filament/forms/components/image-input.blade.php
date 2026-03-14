@@ -3,6 +3,7 @@
     :field="$field">
     <div>
         <div x-data="{ state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }} }" x-init="
+            const urlimage = '/icons/image.svg'
             const imgPath='{{ $field->getImgPath() }}';
             
             const container = $refs.container;
@@ -14,14 +15,13 @@
                 `display: block; position: relative; width: {{ $field->getSize() }}; height: {{ $field->getSize() }}; 
                 cursor: pointer; caret-color: transparent; background-clip: padding-box;
                 background-origin: padding-box; background-repeat: no-repeat no-repeat; background-position: center; 
-                background-size: {{ $field->getSize() }} {{ $field->getSize() }}; background-image:url(\'/icons/image.svg\');`);
+                background-size: {{ $field->getSize() }} {{ $field->getSize() }}; background-image:url('${urlimage}');`);
 
             image.addEventListener('error', ()=> {
-                image.setAttribute('src', '/icons/image.svg');
+                image.setAttribute('src', urlimage);
             });
 
             image.addEventListener('load', (e) => {
-                // this.btnDel.style.display = 'block';
                 const target = e.target;
                 var h = target.height;
                 var w = target.width;
@@ -40,12 +40,12 @@
                 container.style.setProperty('background-image', `url(\'${e.target.src}\')`);
             });
 
-            const observer=new MutationObserver((mutations)=> {
+            const mut_observer=new MutationObserver((mutations)=> {
                 mutations.forEach((mutation) => {
                     if (mutation.type == 'attributes') {
                         if (mutation.attributeName=='src') {
                             var v=mutation.target.getAttribute('src');
-                            if (v == '/icons/image.svg') {
+                            if (v == urlimage) {
                                 v = '';
                             }
                             imgInput.value = v;
@@ -55,12 +55,13 @@
                     }
                 })
             });
-            observer.observe(image, {
+            mut_observer.observe(image, {
                 attributeFilter: ['src'],
                 attributes: true,
                 attributeOldValue: true,
             });
-            image.setAttribute('src', state);
+            console.log(state);
+            image.setAttribute('src', state === null ? urlimage : state );
 
             container.addEventListener('paste', (e) => {
                 e.stopPropagation();

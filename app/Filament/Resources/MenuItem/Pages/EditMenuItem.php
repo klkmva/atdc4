@@ -8,6 +8,8 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditMenuItem extends EditRecord
 {
+    use \App\RedirectIndex;
+    
     protected static string $resource = MenuItemResource::class;
 
     protected function getHeaderActions(): array

@@ -58,4 +58,30 @@ class Option extends Model
     {
         return new HtmlString($this->comment);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // static::deleted(function ($option) {
+        //     $dates = $option->dates()->get();
+        //     foreach ($dates as $date) {
+        //         $date->updateStatus($option->id);
+        //     }
+        // });
+
+        // static::updated(function ($option) {
+        //     $dates = $option->dates()->get();
+        //     foreach ($dates as $date) {
+        //         $date->updateStatus();
+        //     }
+        // });
+
+        // static::created(function ($option) {
+        //     $dates = $option->dates()->get();
+        //     foreach ($dates as $date) {
+        //         $date->updateStatus();
+        //     }
+        // });
+    }
 }

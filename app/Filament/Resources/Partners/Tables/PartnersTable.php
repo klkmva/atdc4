@@ -33,6 +33,7 @@ class PartnersTable
             ])
             ->toolbarActions([
                 //
-            ]);
+            ])
+            ->defaultSort('name', 'asc');
     }
 }

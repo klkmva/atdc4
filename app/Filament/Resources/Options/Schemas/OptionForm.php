@@ -40,9 +40,7 @@ class OptionForm
                     ->label('Dates envisagées')
                     ->multiple()
                     ->relationship(
-                            'dates',
-                            'date',
-                            modifyQueryUsing: fn (Builder $query) => $query->where('status', '<', '2'))
+                            titleAttribute: 'date')
                     ->preload()
                     ->columnSpan(2),
                 RichEditor::make('comment')

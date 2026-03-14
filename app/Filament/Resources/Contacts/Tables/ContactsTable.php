@@ -55,6 +55,7 @@ class ContactsTable
                         ['Content-Type' => 'application/pdf',]
                     );
                 }),
-            ]);
+            ])
+            ->defaultSort('last_name', 'asc');
     }
 }

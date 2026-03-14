@@ -55,6 +55,10 @@ class BookForm
                             ->size('180px')
                             ->live()
                             ->reactive()
+                            ->afterStateHydrated(
+                                function (ImageInput $component, string $operation, string | null $state) {
+                                    $component->state($operation == 'create' ? '' : $state);
+                                })
                     ])
                     ->columnSpan(1),
                 DatePicker::make('publication_date')

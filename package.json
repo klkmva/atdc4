@@ -17,6 +17,7 @@
     "dependencies": {
         "@alpinejs/intersect": "^3.15.5",
         "@tailwindcss/cli": "^4.1.17",
-        "alpinejs": "^3.15.8"
+        "alpinejs": "^3.15.8",
+        "he": "^1.2.0"
     }
 }

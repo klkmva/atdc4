@@ -31,6 +31,7 @@ class PublishersTable
             ])
             ->toolbarActions([
                 //
-            ]);
+            ])
+            ->defaultSort('name', 'asc');
     }
 }

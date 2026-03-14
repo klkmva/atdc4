@@ -59,6 +59,7 @@ class MembersTable
                             [ 'Content-Type' => 'application/pdf', ]
                         );
                     }),
-            ]);
+            ])
+            ->defaultSort('last_name', 'asc');
     }
 }

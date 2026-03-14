@@ -31,6 +31,7 @@ class SpeakersTable
             ])
             ->toolbarActions([
                 //
-            ]);
+            ])
+            ->defaultSort('last_name', 'asc');
     }
 }

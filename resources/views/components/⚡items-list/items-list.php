@@ -7,6 +7,7 @@ use App\Models\News;
 use App\Models\Event;
 use App\Models\Speaker;
 use App\Models\EventSpeaker;
+use Carbon\Carbon;
 
 new class extends Component
 {
@@ -26,10 +27,12 @@ new class extends Component
             return $this->view(['items' => News::where('date', '>=', \now())->orderBy('date', 'desc')->get()]);
         } else {
             if ($this->path == '/') {
-                return $this->view(['items' => Event::where('date', '>=', \now())->orderBy('date', 'desc')->get()]);
+                $today = Carbon::today()->isoFormat('YYYY-MM-DD');
+                return $this->view(['items' => Event::where('date', '>=', $today)->orderBy('date', 'asc')->get()]);
             } else {
                 if ($this->year) {
-                    return $this->view(['items' => Event::where('date', '<', \now())->where('date', 'LIKE', $this->year . '%')->orderBy('date', 'desc')->get()]);
+                    $yesterday = Carbon::yesterday()->isoFormat('YYYY-MM-DD');
+                    return $this->view(['items' => Event::where('date', '<=', $yesterday)->where('date', 'LIKE', $this->year . '%')->orderBy('date', 'desc')->get()]);
                 } else {
                     if ($this->search && $this->model) {
                         if ($this->model == 'event') {

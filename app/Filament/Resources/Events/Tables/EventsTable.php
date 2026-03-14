@@ -35,6 +35,7 @@ class EventsTable
             ])
             ->toolbarActions([
                 //
-            ]);
+            ])
+            ->defaultSort('date', 'desc');
     }
 }

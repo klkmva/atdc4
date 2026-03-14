@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\MenuItem\Schemas;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use App\Models\MenuItem;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;
@@ -16,17 +16,22 @@ class MenuItemForm
         return $schema
             ->components([
                 Select::make('type')
+                    ->label('Type d\'item')
                     ->options(['page' => 'Page', 'menu' => 'Menu'])
                     ->default('page')
-                    ->required()
-                    ->label('Type d\'item'),
+                    ->required(),
                 Select::make('parent_id')
                     ->label('Menu parent')
                     ->disabled(fn () => sizeof(MenuItem::where('type', 'menu')->get()) == 0 )
                     ->relationship(name: 'menuitem', titleAttribute: 'title', ignoreRecord: true),
-                TextInput::make('order')
-                    ->extraInputAttributes(['type' => 'number', 'min' => 0, 'max' => 10, 'step' => 1])
+                Select::make('order')
                     ->label('Ordre')
+                    ->options(function (Get $get, string $operation) {
+                        $count = MenuItem::where('parent_id', $get('parent_id'))->count();
+                        $result = $operation == 'create' ? 
+                            ($count == 0 ? [0] : [0, $count]) : ($count == 1 ? [0] : [0, $count]);
+                        return $result;
+                        })
                     ->default(0)
                     ->required(),
                 TextInput::make('url')
@@ -40,11 +45,13 @@ class MenuItemForm
                     ->string()
                     ->maxLength(25)
                     ->columnSpan(2),
-                RichEditor::make('content')
+                TinyEditor::make('content')
                     ->hiddenLabel()
                     ->placeholder('Contenu de la page')
+                    ->profile('custom')
                     ->disabled(fn (Get $get) => $get('type') == 'menu')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->required(),
             ])
             ->columns(3);
     }

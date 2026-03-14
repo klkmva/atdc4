@@ -12,9 +12,11 @@ class DateForm
         return $schema
             ->components([
                 DatePicker::make('date')
+                    ->extraInputAttributes(['width' => '100px'])
                     ->label('Date')
                     ->required()
-                    ->date(),
+                    ->date()
+                    ->autofocus(),
             ]);
     }
 }

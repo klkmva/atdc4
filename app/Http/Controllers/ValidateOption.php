@@ -2,26 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Filament\Resources\Events\EventResource;
 use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\Date;
-use App\Models\DateOption;
 use App\Models\Option;
 use App\Models\Event;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request;
 class ValidateOption extends Controller
 {
     public function validation($data)
     {
         $explode = \explode('-', $data);
         if (sizeof($explode) == 2) {
-            $option_id = $explode[1];
             $date_id = $explode[0];
-            $option = Option::find($option_id);
+            $option_id = $explode[1];
             $date = Date::find($date_id);
+            $option = Option::find($option_id);
             $book = Book::find($option->book_id);
             if ($book) {
                 $arr = [
@@ -37,14 +33,17 @@ class ValidateOption extends Controller
                     'canceled' => false,
                     'created_at' => \now(),
                 ];
+
+                // Suppresion de l'option
+                // entraîne les suppressions en cascade dans la table pivot
+                $option->delete();
+
                 // Création de l'évènement correspondant à l'option
+                // entraîne la suppresion de la date (cf App\Models\Event)
+                // puis les suppressions en cascade dans la table pivot
                 $event = Event::create($arr);
 
-                // Suppression des options sur la date
-                DateOption::where('date_id', $date->id)->delete();
-
-                // return to_route(EventResource::getUrl('edit', ['record' => $event->id]));
-                return Redirect::route(EventResource::getUrl('edit'), ['record' => $event->id], 302);
+                return response()->json(['url' => route('filament.admin.resources.events.edit', ['record' => $event->id])]);
             } else {
                 Notification::make()
                     ->title('Vous devez associer un ouvrage à l\'option')

@@ -199,4 +199,6 @@ return [
     */
 
     'release_token' => 'a',
+
+    'payload' => [ 'max_nesting_depth' => 15 ],
 ];

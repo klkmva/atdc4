@@ -1,6 +1,6 @@
 <script>
     document.documentElement.dataset['theme'] = 'dark'
-    const observer = new MutationObserver(
+    const mutation_observer = new MutationObserver(
         (mutationList) => {
             console.log('observe')
             mutationList.forEach(
@@ -15,7 +15,7 @@
             )
         }
     )
-    observer.observe(document.querySelector('html'), {
+    mutation_observer.observe(document.querySelector('html'), {
         attribute: true,
         attributeFilter: ['class'],
     });

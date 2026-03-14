@@ -4,7 +4,7 @@
 'size' => 'w-full',
 'margin' => 'm-0',
 'padding' => 'p-3 sm:p-6',
-'bg' => 'dark:bg-zinc-600 bg-zinc-200',
+'bg' => 'dark:bg-stone-600 bg-stone-200',
 'border' => '',
 'display' => '',
 'class' => '',

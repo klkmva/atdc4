@@ -24,3 +24,6 @@ Homestead.yaml
 Thumbs.db
 *.cmd
 vite.config.js
+/.agents
+AGENT.md
+boost.json

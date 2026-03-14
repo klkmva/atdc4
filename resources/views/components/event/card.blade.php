@@ -4,24 +4,27 @@
 @props([
 'event',
 ])
+@php
+    $bookid = $event->book_id;
+@endphp
 <x-card size="w-full h-full" margin="mb-[1lh]">
     <div class="w-full text-xs sm:text-base eventcontainer">
         <div class="w-full sm:w-3/10 sm:float-right ml-1 h-full speakerscontainer">
             @foreach ($event->speakers as $speaker)
-            <x-speaker.card :speaker="$speaker" class=" w-full sm:w-3/10"></x-card>
+            <x-speaker.card :speaker="$speaker" class=" w-full sm:w-3/10" />
             @endforeach
         </div>
-        <h2 @class([ "font-semibold sm:text-3xl text-xl text-zinc-700 dark:text-amber-400"=> true,
+        <div @class([ "sm:text-3xl text-2xl text-stone-900 dark:text-stone-100 font-semibold"=> true,
             "mb-[1lh]" => $event->subtitle == '',
             ])>
             {{ $event->title }}
-        </h2>
+        </div>
         @if ($event->subtitle != '')
-        <h2 class="font-semibold mb-[1lh] sm:text-xl text-lg dark:text-amber-300 text-zinc-600">{{ $event->subtitle }}</h2>
+        <div class="font-semibold mb-[1lh] sm:text-2xl text-xl dark:text-stone-100 text-stone-800">{{ $event->subtitle }}</div>
         @endif
-        <div>
+        <div class="text-sm sm:text-base">
             @if ($event->image)
-            <x-image type="event" src="{{ $event->image }}" alt="" style="float:inline-start" margin="mr-[10px] mb-[5px]" maxsize="max-h-[150px]" />
+            <x-image src="{{ $event->image }}" alt="" type="event" style="float:inline-start" float="left" margin="mr-[10px] mb-[5px]" maxsize="max-h-[150px] xl:max-h-[220px]" :bookid="$bookid" :eventid="$event->id" />
             @endif
             @if ($event->info)
             {{ render::make($event->info) }}

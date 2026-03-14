@@ -32,6 +32,7 @@ class NewsTable
             ])
             ->toolbarActions([
                 //
-            ]);
+            ])
+            ->defaultSort('date', 'desc');
     }
 }

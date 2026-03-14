@@ -23,28 +23,22 @@ class DatesTable
                     ->date('D d M Y')
                     ->sortable()
                     ->width('20%'),
-                IconColumn::make('status')
-                    ->label('Status')
-                    ->color(fn ($state) => $state === 0 ? 'success' : ($state === 1 ? 'warning' : 'danger'))
-                    ->icon('heroicon-o-check-circle')
-                    ->width('10%'),
                 TextColumn::make('optcount')
                     ->label('Options')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($state) => $state == 0 ? 'success' : 'warning' ),
                 OptionsColumn::make('opts')
                     ->label('Options')
             ])
             ->filters([
-                Filter::make('Dates libres')
-                    ->query(fn(Builder $query): Builder => $query->where('status', '<', 2)),
-                Filter::make('Dates avec option(s)')
-                    ->query(fn(Builder $query): Builder => $query->where('status', 1))
+                //
             ])
             ->recordActions([
                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 //
-            ]);
+            ])
+            ->defaultSort('date', 'asc');
     }
 }
