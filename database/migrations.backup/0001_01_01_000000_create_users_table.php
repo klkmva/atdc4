@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('last_name');
-            $table->string('fullname')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();

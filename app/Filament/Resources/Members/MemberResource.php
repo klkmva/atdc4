@@ -26,7 +26,7 @@ class MemberResource extends Resource
 
     protected static ?string $modelLabel = 'Adhérent';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Gestion';
+    protected static string | UnitEnum | null $navigationGroup = 'Administration';
 
     protected static ?int $navigationSort = 1;
 

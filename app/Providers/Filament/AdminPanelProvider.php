@@ -30,6 +30,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
+            ->passwordResetRoutePrefix('password-reset')
+            ->passwordResetRequestRouteSlug('request')
+            ->passwordResetRouteSlug('reset')
+            ->passwordReset()
+            ->profile()
             ->colors([
                 'primary' => Color::Amber,
                 'danger' => Color::Red,
@@ -67,13 +72,13 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Références')
                     ->collapsed(true),
                 NavigationGroup::make()
-                    ->label('Gestion')
-                    ->collapsed(true),
-                NavigationGroup::make()
                     ->label('Planning')
                     ->collapsed(true),
                 NavigationGroup::make()
                     ->label('Site')
+                    ->collapsed(true),
+                NavigationGroup::make()
+                    ->label('Administration')
                     ->collapsed(true),
             ])
             ->plugins([

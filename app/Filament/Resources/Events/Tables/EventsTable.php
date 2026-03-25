@@ -16,6 +16,7 @@ class EventsTable
             ->columns([
                 TextColumn::make('shortdate')
                     ->label('Date')
+                    ->width('10rem')
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query
                             ->orderBy('date', $direction);

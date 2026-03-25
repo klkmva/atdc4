@@ -19,6 +19,7 @@ class ContactsTable
         return $table
             ->columns([
                 TextColumn::make('full_name')
+                    ->state(fn(Contact $record): string => "{$record->first_name} {$record->last_name}")
                     ->label('Nom complet')
                     ->searchable()
                     ->sortable(),

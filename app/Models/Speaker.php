@@ -33,23 +33,23 @@ class Speaker extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+            get: fn($value) => htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5)
         );
     }
 
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+            get: fn($value) => htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5)
         );
     }
 
-    protected function fullName(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
-        );
-    }
+    // protected function full_Name(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn(Speaker $record) => html_entity_decode($record->first_name . ' ' . $record->last_name, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+    //     );
+    // }
 
     protected function info(): Attribute
     {

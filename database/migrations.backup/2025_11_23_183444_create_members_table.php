@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255);
-            $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->string('email', 45)->nullable();
             $table->date('date');
             $table->date('echeance')->virtualAs('DATE_ADD(date, INTERVAL 1 YEAR)');

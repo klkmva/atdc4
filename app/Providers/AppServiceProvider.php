@@ -2,18 +2,15 @@
 
 namespace App\Providers;
 
-use App\Models\DateOption;
-use App\Observers\DateOptionObserver;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
 use Filament\Support\Facades\FilamentTimezone;
 use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\view;
+use Illuminate\Support\Facades\View;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -61,6 +58,10 @@ class AppServiceProvider extends ServiceProvider
         );
 
         View::addNamespace('layout', resource_path('views/layout'));
+
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
+            return env('APP_URL') . '/reset-password/' . $token;
+        });
     }
 
 }

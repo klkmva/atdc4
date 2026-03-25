@@ -5,6 +5,7 @@
 .editorconfig
 .phpactor.json
 .phpunit.result.cache
+/.agents
 /.fleet
 /.idea
 /.nova

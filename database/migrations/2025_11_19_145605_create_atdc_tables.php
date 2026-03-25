@@ -103,6 +103,102 @@ return new class extends Migration
         } catch (Exception $e) {
             //
         }
+        try {
+            Schema::table('sessions', function (Blueprint $table) {
+                $table->dropForeign(['user_id']);
+            });
+        } catch (Exception $e) {
+            //
+        }
+        try {
+            Schema::table('failed_import_rows', function (Blueprint $table) {
+                $table->dropForeign(['import_id']);
+            });
+        } catch (Exception $e) {
+            //
+        }
+        try {
+            Schema::table('imports', function (Blueprint $table) {
+                $table->dropForeign(['user_id']);
+            });
+        } catch (Exception $e) {
+            //
+        }
+        try {
+            Schema::table('exports', function (Blueprint $table) {
+                $table->dropForeign(['user_id']);
+            });
+            echo 'sessions drop foreign';
+        } catch (Exception $e) {
+            //
+        }
+
+        Schema::dropIfExists('users');
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('first_name')->nullable();
+            $table->string('last_name');
+            $table->boolean('is_admin')->default(false);
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::dropIfExists('imports');
+        Schema::create('imports', function (Blueprint $table): void {
+            $table->id();
+            $table->timestamp('completed_at')->nullable();
+            $table->string('file_name');
+            $table->string('file_path');
+            $table->string('importer');
+            $table->unsignedInteger('processed_rows')->default(0);
+            $table->unsignedInteger('total_rows');
+            $table->unsignedInteger('successful_rows')->default(0);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
+
+        Schema::dropIfExists('failed_import_rows');
+        Schema::create('failed_import_rows', function (Blueprint $table): void {
+            $table->id();
+            $table->json('data');
+            $table->foreignId('import_id')->constrained()->cascadeOnDelete();
+            $table->text('validation_error')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::dropIfExists('exports');
+        Schema::create('exports', function (Blueprint $table): void {
+            $table->id();
+            $table->timestamp('completed_at')->nullable();
+            $table->string('file_disk');
+            $table->string('file_name')->nullable();
+            $table->string('exporter');
+            $table->unsignedInteger('processed_rows')->default(0);
+            $table->unsignedInteger('total_rows');
+            $table->unsignedInteger('successful_rows')->default(0);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
+
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::dropIfExists('sessions');
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
 
         Schema::dropIfExists('pages');
         Schema::create('pages', function (Blueprint $table) {
@@ -195,7 +291,6 @@ return new class extends Migration
                 ->on('contacts')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
-            $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->timestamps();
 
             $table->fullText(['first_name', 'last_name']);
