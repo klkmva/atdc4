@@ -49,10 +49,12 @@ class EventForm
                                             ->displayFormat('ddd d/m/Y')
                                             ->columnSpan(1)
                                             ->rules([
-                                                fn (): Closure => function ($attribute, $value, Closure $fail) {
-                                                    $date = Date::where('date', $value)->first();
-                                                    if (!$date) {
-                                                        $fail('Cette date n`\'est pas disponible');
+                                                fn ($operation): Closure => function ($attribute, $value, Closure $fail) use ($operation) {
+                                                    if ($operation == 'create') {
+                                                        $date = Date::where('date', $value)->first();
+                                                        if (!$date) {
+                                                            $fail('Cette date n`\'est pas disponible');
+                                                        }
                                                     }
                                                 }
                                             ]),
@@ -179,21 +181,31 @@ class EventForm
                                     ])->columnSpan(1),
                             ])->columns(4),
                         Tab::make('Bilan')
+                            ->extraAttributes(fn(Get $get) => $get('date') > today() ? ['disabled' => true] : [])
                             ->schema([
-                                TextInput::make('spectators_counter')
-                                    ->label('Nombre de spectateurs')
-                                    ->columnSpanFull(),
-                                Section::make('Coûts')
-                                    ->columns(3)
+                                Grid::make(2)
                                     ->schema([
-                                        TextInput::make('travel_cost')
-                                            ->label('Voyage'),
-                                        TextInput::make('hotel_cost')
-                                            ->label('Hébergement'),
-                                        TextInput::make('meal_cost')
-                                            ->label('Repas'),
-                                    ]),
-                            ])
+                                        FieldSet::make('')
+                                            ->columns(1)
+                                            ->contained(false)
+                                            ->schema([
+                                                TextInput::make('spectators_counter')
+                                                    ->label('Nombre de spectateurs'),
+                                                TextInput::make('video')
+                                                    ->label('Url vidéo'),
+                                            ]),
+                                        Section::make('Coûts')
+                                            ->columns(3)
+                                            ->schema([
+                                                TextInput::make('travel_cost')
+                                                    ->label('Voyage'),
+                                                TextInput::make('hotel_cost')
+                                                    ->label('Hébergement'),
+                                                TextInput::make('meal_cost')
+                                                    ->label('Repas'),
+                                            ]),
+                                    ])
+                            ]),
                     ])->columnSpanFull()
         ]);
     }

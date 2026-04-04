@@ -7,5 +7,7 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateUser extends CreateRecord
 {
+    use \App\RedirectIndex;
+    
     protected static string $resource = UserResource::class;
 }

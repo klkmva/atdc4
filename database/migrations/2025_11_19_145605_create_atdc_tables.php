@@ -138,9 +138,10 @@ return new class extends Migration
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('last_name');
+            $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->boolean('is_admin')->default(false);
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -252,11 +253,11 @@ return new class extends Migration
             $table->id();
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255);
+            $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->string('company', 255)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone1', 20)->nullable();
             $table->string('phone2', 20)->nullable();
-            $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->timestamps();
 
             $table->index(['first_name'], 'ifirst');
@@ -283,6 +284,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255);
+            $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->longText('info')->default('');
             $table->string('image', 255)->nullable();
             $table->foreignId('contact_id')

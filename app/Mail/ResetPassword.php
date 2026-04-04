@@ -31,7 +31,7 @@ class ResetPassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('admin@amisdutempsdescerises.org', 'Administrateur du site'),
+            from: new Address('michel.lejeau@miclej.fr', 'Administrateur du site'),
             subject: 'Modification du mot de passe',
         );
     }

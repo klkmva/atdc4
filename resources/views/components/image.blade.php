@@ -17,14 +17,16 @@ $publisher = (is_null($book) || is_null($book->publisher_id)) ? '' : Publisher::
 <div @class([ 'float-right'=> $float === 'right',
     'float-left' => $float === 'left',
     $margin => true,
+    'eventimg' => true,
     ])>
     <flux:modal.trigger :name="'show-image'.$eventid">
         <img @class([ 'rounded-sm outline outline-amber-50 outline-offset-2 p-[5px] bg-zinc-800'=> true,
         $maxsize => true,
         'eventimg' => $type === 'event',
         ])
-        {{ $attributes }} onerror="this.style='display:none'"
-        title="{{ $bookid }}" />
+        {{ $attributes }}
+        onerror="this.style='display:none'"
+        onload="document.getElementById('evinfo{{ $eventid }}').style='min-height:'+this.getBoundingClientRect().height+'px;'" />
     </flux:modal.trigger>
     <flux:modal :name="'show-image'.$eventid" class="w-[90vw] lg:w-[50vw] bg-stone-100! dark:bg-stone-900!" flyout>
         <div class="flex flex-col">

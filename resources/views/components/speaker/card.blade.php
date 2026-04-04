@@ -7,14 +7,14 @@
 @php
 $height = ($speaker->info == '') ? ($speaker->image == null || $speaker->image == '' ? 'h-[3lh]' : 'h-[80px]') : 'lg:h-[200px] h-[110px]'
 @endphp
-<x-card class="w-full max-h-full h-auto"
-    bg="bg-stone-300 dark:bg-stone-800"
-    border="border border-zinc-400 dark:border-zinc-400">
+<x-card class="w-full max-h-full h-auto cursor-pointer"
+    bg="bg-stone-300 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-950"
+    border="border border-zinc-400 dark:border-zinc-400 hover:border-2 hover:border-zinc-800 dark:hover:border-zinc-50">
     <flux:modal.trigger :name="'speaker_info'.$speaker->id">
         <div class="grid grid-cols-2">
             @if ($speaker->image)
             <div class="m-2 h-auto">
-                <flux:avatar src="{{ $speaker->image }}" alt="" size="xl" />
+                <flux:avatar src="{{ asset('storage' . $speaker->image) }}" alt="" size="xl" />
             </div>
             @endif
             <div class="font-semibold sm:text-xl lg:text-2xl text-base">{{ $speaker->full_name }}</div>
@@ -24,7 +24,7 @@ $height = ($speaker->info == '') ? ($speaker->image == null || $speaker->image =
         <div class="grid grid-rows-2">
             <div class="m-2 h-auto">
                 @if ($speaker->image)
-                <img src="{{ $speaker->image }}" alt="" class="inline pr-4 w-16" onerror="this.style='display:none;margin-right:0;'" />
+                <img src="{{ asset('storage' . $speaker->image) }}" alt="" class="inline pr-4 w-16" onerror="this.style='display:none;margin-right:0;'" />
                 @endif
                 <div class="font-semibold sm:text-2xl lg:text-3xl text-xl inline">{{ $speaker->full_name }}</div>
             </div>

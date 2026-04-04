@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ValidateOption;
+use App\Http\Controllers\PageTemplates;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -14,6 +15,7 @@ Route::livewire('/archives/{year?}', 'pages::archives')->where('year', '\d{4}')-
 Route::livewire('/archives/search', 'pages::archives');
 Route::livewire('/page/{page}', 'pages::page')->name('page');
 Route::get('/validate/{data}', [ValidateOption::class, 'validation'])->name('validate');
+Route::get('/page_templates', [PageTemplates::class, 'templates'])->name('page_templates');
 
 Route::get('/reset-password/{token}', function (string $token) {
     return view('auth.reset-password', ['token', $token]);

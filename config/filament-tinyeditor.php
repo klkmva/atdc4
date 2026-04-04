@@ -10,8 +10,8 @@ return [
         ],
         'licence_key' => env('TINY_LICENSE_KEY', 'no-api-key'),
     ],
-    'provider' => 'cloud', // cloud|vendor
-    // 'direction' => 'rtl',
+    'provider' => 'vendor', // cloud|vendor
+    'direction' => 'ltr',
 
     /**
      * change darkMode: 'auto'|'force'|'class'|'media'|false|'custom'
@@ -53,8 +53,8 @@ return [
         ],
 
         'custom' => [
-            'plugins' => 'accordion autoresize codesample directionality advlist link image lists preview pagebreak searchreplace wordcount code fullscreen insertdatetime media table emoticons',
-            'toolbar' => 'undo redo removeformat | styles | bold italic underline | alignjustify alignleft aligncenter alignright | numlist bullist outdent indent | forecolor backcolor | table toc hr | image link media | wordcount',
+            'plugins' => 'accordion autoresize advlist link image lists preview pagebreak searchreplace table',
+            'toolbar' => 'undo redo removeformat | styles | bold italic underline | alignjustify alignleft aligncenter alignright | numlist bullist outdent indent | forecolor backcolor | table hr | image link',
             'upload_directory' => null,
         ]
     ],
@@ -75,6 +75,7 @@ return [
             // 'fontsize' => '10px 12px 13px 14px 16px 18px 20px',
             // 'fontfamily' => 'Tahoma=tahoma,arial,helvetica,sans-serif;',
             // 'content_style' => 'body { font-family: "Tahoma", sans-serif; }',
-        ]
+        ],
+        'block_formats' => 'toto 1=h1; toto 2=h2;',
     ]
 ];

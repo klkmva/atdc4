@@ -30,27 +30,6 @@ class Speaker extends Model
         return $this->belongsTo(Contact::class, 'contact_id');
     }
 
-    protected function firstName(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5)
-        );
-    }
-
-    protected function lastName(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5)
-        );
-    }
-
-    // protected function full_Name(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn(Speaker $record) => html_entity_decode($record->first_name . ' ' . $record->last_name, ENT_QUOTES | ENT_HTML5, 'UTF-8')
-    //     );
-    // }
-
     protected function info(): Attribute
     {
         return Attribute::make(

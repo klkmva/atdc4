@@ -11,6 +11,8 @@ use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\View;
 use App\Models\User;
+use Laravel\Fortify\Fortify;
+use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,11 +28,7 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        // DB::listen(function ($query) {
-        //     Log::info($query->sql);
-        // });
-        
+    {        
         FilamentTimezone::set('Europe/Paris');
 
         FilamentAsset::register([
@@ -47,11 +45,7 @@ class AppServiceProvider extends ServiceProvider
             fn() => view('flux.flux-styles')
         );
 
-        // Bouton de sélection mode sombre/clair
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::TOPBAR_END, fn() => view('filament.app.components.dark')
-        );
-
+        // Titre page admin
         FilamentView::registerRenderHook(
             PanelsRenderHook::TOPBAR_LOGO_AFTER,
             fn() => view('filament.brand')
@@ -59,9 +53,17 @@ class AppServiceProvider extends ServiceProvider
 
         View::addNamespace('layout', resource_path('views/layout'));
 
-        ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return env('APP_URL') . '/reset-password/' . $token;
-        });
+        // ResetPassword::createUrlUsing(function (User $user, string $token) {
+        //     return env('APP_URL') . '/reset-password/' . $token;
+        // });
+
+        // Fortify::loginView('auth.login');
+        // Fortify::requestPasswordResetLinkView(function () {
+        //     return view('auth.forgot-password');
+        // });
+        // Fortify::resetPasswordView(function (Request $request) {
+        //     return view('auth.reset-password', ['request' => $request]);
+        // });
     }
 
 }

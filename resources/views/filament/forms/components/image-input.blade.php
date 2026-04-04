@@ -60,7 +60,6 @@
                 attributes: true,
                 attributeOldValue: true,
             });
-            console.log(state);
             image.setAttribute('src', state === null ? urlimage : state );
 
             container.addEventListener('paste', (e) => {
@@ -96,12 +95,9 @@
             container.addEventListener('dragenter', (e) => {
                 e.stopPropagation();
                 const dt = e.dataTransfer;
-                console.log(dt);
                 var hasImage = false;
                 [...dt.items].forEach((item) => {
-                    if (item.kind === 'file' && item.type.match(/image.*/)) {
-                        hasImage = true;
-                    }
+                    hasImage = hasImage || (item.kind === 'file' && item.type.match(/image.*/));
                 });
                 if (!hasImage) {
                     dt.dropEffect = 'none';
