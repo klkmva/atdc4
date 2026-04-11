@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Events\Tables;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -26,13 +28,16 @@ class EventsTable
                     ->searchable(),
             ])
             ->filters([
-                //
+                Filter::make('à venir')
+                    ->query(fn($query) => $query->where('date', '>=', today())),
+                Filter::make('passées')
+                    ->query(fn($query) => $query->where('date', '<', today())),
             ])
             ->recordActions([
-            DeleteAction::make()
-                ->icon('heroicon-o-trash')
-                ->iconButton()
-                ->requiresConfirmation(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 //

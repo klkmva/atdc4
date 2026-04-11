@@ -14,19 +14,24 @@ $height = ($speaker->info == '') ? ($speaker->image == null || $speaker->image =
         <div class="grid grid-cols-2">
             @if ($speaker->image)
             <div class="m-2 h-auto">
-                <flux:avatar src="{{ asset('storage' . $speaker->image) }}" alt="" size="xl" />
+                <flux:avatar src="{{ asset('storage' . $speaker->image) }}" alt="Photo de l'intervenant" size="xl" />
             </div>
             @endif
             <div class="font-semibold sm:text-xl lg:text-2xl text-base">{{ $speaker->full_name }}</div>
         </div>
     </flux:modal.trigger>
-    <flux:modal :name="'speaker_info'.$speaker->id" flyout variant="floating" class="max-w-[80vw] sm:max-w-[50vw] w-auto h-auto">
-        <div class="grid grid-rows-2">
-            <div class="m-2 h-auto">
+    <flux:modal :name="'speaker_info'.$speaker->id" flyout variant="floating">
+        <div class="flex flex-col max-w-[80vw] sm:max-w-[60vw] lg:max-w-[20vw]" x-data
+            x-init="
+        const dial = $el.closest('dialog');
+        if (dial) dial.style = window.screen.availWidth > 1024 ? 'max-width:20vw' : (window.screen.availWidth > 640 ? 'max-width:50vw' : 'max-width:90vw')">
+            <div class="flex flex-row w-full">
                 @if ($speaker->image)
-                <img src="{{ asset('storage' . $speaker->image) }}" alt="" class="inline pr-4 w-16" onerror="this.style='display:none;margin-right:0;'" />
+                <div class="m-2 h-auto">
+                    <flux:avatar src="{{ asset('storage' . $speaker->image) }}" alt="Photo de l'intervenant" size="xl" />
+                </div>
                 @endif
-                <div class="font-semibold sm:text-2xl lg:text-3xl text-xl inline">{{ $speaker->full_name }}</div>
+                <div class="font-semibold sm:text-xl lg:text-2xl text-base ml-2 pt-2">{{ $speaker->full_name }}</div>
             </div>
             @if ($speaker->info)
             <div>{{ render::make($speaker->info) }}</div>

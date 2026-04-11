@@ -19,6 +19,6 @@ class ListEvents extends ListRecords
 
     public function getTitle(): string
     {
-        return 'Liste des conférences';
+        return 'Conférences';
     }
 }

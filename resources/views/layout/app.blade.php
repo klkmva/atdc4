@@ -37,6 +37,13 @@
         document.addEventListener('livewire:navigated', () => { wload() });
         document.addEventListener('livewire:load', () => { wload() });
         window.addEventListener('resize', () => { wload() });
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            document.querySelectorAll('dialog').forEach((dial) => {
+                dial.style = window.screen.width > 1024 ? 'max-width:20vw' : (window.screen.width > 640 ? 'max-width:50vw' : 'max-width:80vw')
+            })
+        })
+        resizeObserver.observe(document.body);
     </script>
 
     @fluxScripts

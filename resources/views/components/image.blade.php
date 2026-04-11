@@ -28,7 +28,7 @@ $publisher = (is_null($book) || is_null($book->publisher_id)) ? '' : Publisher::
         onerror="this.style='display:none'"
         onload="document.getElementById('evinfo{{ $eventid }}').style='min-height:'+this.getBoundingClientRect().height+'px;'" />
     </flux:modal.trigger>
-    <flux:modal :name="'show-image'.$eventid" class="w-[90vw] lg:w-[50vw] bg-stone-100! dark:bg-stone-900!" flyout>
+    <flux:modal :name="'show-image'.$eventid" class="bg-stone-100! dark:bg-stone-900!" flyout variant="floating">
         <div class="flex flex-col">
             <img {{ $attributes }} class="max-h-[50vh] max-w-[20vw] mx-auto" />
             @if(is_null($book))
