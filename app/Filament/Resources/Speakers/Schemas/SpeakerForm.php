@@ -21,6 +21,7 @@ class SpeakerForm
             ->components([
                 Section::make()
                     ->description('Nom et prénom')
+                    ->columns(2)
                     ->schema([
                         TextInput::make('first_name')
                             ->hiddenLabel()
@@ -30,34 +31,14 @@ class SpeakerForm
                             ->hiddenLabel()
                             ->placeholder('Nom')
                             ->columnSpan(1),
-                    ])->columns(2)->columnSpan(3),
-                Section::make('Photo')
-                    ->columns(1)
-                    ->afterHeader(
-                        [
-                            Action::make('removeImage')
-                                ->label('')
-                                ->color('danger')
-                                ->icon('heroicon-o-trash')
-                                ->action(function ($record, $form) {
-                                    $record->image = null;
-                                    $record->save();
-                                    $form->fill([
-                                        'image' => null,
-                                    ]);
-                                })
-                                ->hidden(fn($record) => !$record || !$record->image),
-                        ]
-                    )
-                    ->schema([
-                        ImageInput::make('image')
-                            ->hiddenLabel()
-                            ->size('50px')
-                            ->live()
-                            ->reactive()
-                            ->extraFieldWrapperAttributes(['style' => 'justify-items: center;']),
-                    ])->columnSpan(1),
-                    
+                    ])
+                    ->columnSpan(3),
+                ImageInput::make('image')
+                    ->hiddenLabel()
+                    ->size('150px')
+                    ->live()
+                    ->columnSpan(1)
+                    ->extraFieldWrapperAttributes(['style', 'justify-content:center;']),                    
                 RichEditor::make('info')
                     ->label('Biographie')
                     ->placeholder('Biographie du conférencier...')

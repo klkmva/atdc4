@@ -11,6 +11,7 @@ use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\View;
 use App\Models\User;
+use Filament\Support\Assets\Js;
 use Laravel\Fortify\Fortify;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         FilamentAsset::register([
             Css::make('philosopher-font', 'https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap'),
+            Js::make('platform', 'https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.5/platform.min.js'),
         ]);
 
         FilamentView::registerRenderHook(
@@ -53,17 +55,17 @@ class AppServiceProvider extends ServiceProvider
 
         View::addNamespace('layout', resource_path('views/layout'));
 
-        // ResetPassword::createUrlUsing(function (User $user, string $token) {
-        //     return env('APP_URL') . '/reset-password/' . $token;
-        // });
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
+            return env('APP_URL') . '/reset-password/' . $token;
+        });
 
-        // Fortify::loginView('auth.login');
-        // Fortify::requestPasswordResetLinkView(function () {
-        //     return view('auth.forgot-password');
-        // });
-        // Fortify::resetPasswordView(function (Request $request) {
-        //     return view('auth.reset-password', ['request' => $request]);
-        // });
+        Fortify::loginView('auth.login');
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');
+        });
+        Fortify::resetPasswordView(function (Request $request) {
+            return view('auth.reset-password', ['request' => $request]);
+        });
     }
 
 }

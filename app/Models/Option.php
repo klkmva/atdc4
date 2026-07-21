@@ -50,7 +50,7 @@ class Option extends Model
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->user->name
+            get: fn($value) => $this->User->full_name
         );
     }
 

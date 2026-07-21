@@ -1,10 +1,14 @@
+@blaze
+
 <flux:navbar class="-mb-px max-lg:hidden w-full">
     <flux:navbar.item href="/" :current="request()->is('/')" wire:navigate>Programme</flux:navbar.item>
     <flux:navbar.item href="/archives" :current="request()->is('archives*')" wire:navigate>Archives</flux:navbar.item>
     @foreach ($items as $item)
-        @if($item->type == 'page')
-        <flux:navbar.item href="/page/{{ $item->id }}" wire:current="request()->is('/page/{{ $item->id }}')">{{ $item->title }}</flux:navbar.item>
-        @endif
+    @if($item['type'] == 'page')
+    <flux:navbar.item href="/page/{{ $item['id'] }}" wire:current="request()->is('/page/{{ $item['id'] }}')">{{ $item['title'] }}</flux:navbar.item>
+    @else
+    <livewire:dropdown :item="$item" />
+    @endif
     @endforeach
     <flux:spacer />
     <flux:navbar class="me-4 w-full justify-end">

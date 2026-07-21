@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Event;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 Route::livewire('/', 'pages::home');
 Route::livewire('/archives/{year?}', 'pages::archives')->where('year', '\d{4}')->name('archives');
@@ -16,6 +18,26 @@ Route::livewire('/archives/search', 'pages::archives');
 Route::livewire('/page/{page}', 'pages::page')->name('page');
 Route::get('/validate/{data}', [ValidateOption::class, 'validation'])->name('validate');
 Route::get('/page_templates', [PageTemplates::class, 'templates'])->name('page_templates');
+
+Route::get('/query', function (Request $request) {
+    // select peut prendre les valeurs :
+    //  - futur : les évènements à venir (valeur par défaut)
+    //  - passe : les évènements passés
+    //  - all : tous les évènements
+    $select = $request->query('select', 'futur');
+    $where = $select == 'futur' ? ' where date >= current_date() ' : ($select == 'passe' ? ' where date < current_date() ' : '');
+
+    // Les évènements sont triés par date ascendantes (asc) ou descendantes (desc)
+    $order = $request->query('order', $select == 'passe' ? 'desc' : 'asc');
+    $orderby = $order == 'asc' ? ' order by date asc ' : ' order by date desc ';
+
+    // Nombre d'évènements à renvoyer
+    $n = $request->query('n', null);
+    $limit = preg_match('/\d+/', $n) ? ' limit ' . $n . ';': ';';
+
+    $query = 'select * from events inner join locations on locations.id = events.location_id' . $where . $orderby . $limit;
+    return DB::select($query);
+});
 
 Route::get('/reset-password/{token}', function (string $token) {
     return view('auth.reset-password', ['token', $token]);

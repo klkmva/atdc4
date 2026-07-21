@@ -10,14 +10,14 @@ class PageTemplates extends Controller
     {
         return json_encode([
             [
-                'title' => 'Template1',
-                'description' => 'Un template test',
-                'content' => '<div style="font-size: 24pt; color: red">Hello world</div>'
+                'title' => 'Section',
+                'description' => 'Insérer une section',
+                'content' => '<section><h1>titre</h1><p>texte</p></section>'
             ],
             [
-                'title' => 'Template2',
-                'description' => 'Un deuxième template',
-                'content' => '<div style="font-size: 6pt; color: green">Hello world</div>'
+                'title' => 'Cadre',
+                'description' => 'Insérer un cadre',
+                'content' => '<div class="frame">texte</div>'
             ],
         ]);
     }

@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Filament\Resources\Events\EventResource;
 use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\Date;
 use App\Models\Option;
 use App\Models\Event;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Redirect;
+
 class ValidateOption extends Controller
 {
-    public function validation($data)
+    public function validation(string $data)
     {
         $explode = \explode('-', $data);
         if (sizeof($explode) == 2) {
@@ -43,7 +46,7 @@ class ValidateOption extends Controller
                 // puis les suppressions en cascade dans la table pivot
                 $event = Event::create($arr);
 
-                return response()->json(['url' => route('filament.admin.resources.events.edit', ['record' => $event->id])]);
+                return redirect(EventResource::getUrl('edit', ['record' => $event->id]));
             } else {
                 Notification::make()
                     ->title('Vous devez associer un ouvrage à l\'option')

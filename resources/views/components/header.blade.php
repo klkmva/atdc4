@@ -1,6 +1,6 @@
 @blaze
 
-<flux:modal name="search" class="p-0! w-auto! border! border-zinc-300 rounded-xl">
+<flux:modal name="search" class="sm:w-[50vw] w-[80vw]" flyout variant="floating">
     <livewire:search />
 </flux:modal>
 <flux:header container sticky class="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700 w-full">

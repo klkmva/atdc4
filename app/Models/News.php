@@ -33,35 +33,16 @@ class News extends Model
         parent::boot();
 
         static::saving(function (News $news) {
-            $image = $news->image;
-            if ($image && preg_match('/^data:.*/', $image)) {
-                try {
-                    $a = explode(',', $image);
-                    $b = explode(";", $a[0]);
-                    $c = explode(":", $b[0]);
-                    $d = explode("/", $c[1]);
-                    $ext = $d[1];
-                    $name = uniqid() . '.' . $ext;
-                    $encoded = $a[count($a) - 1];
-                    $decoded = base64_decode($encoded);
-                    if (Storage::disk('public')->put('/images/news/' . $name, $decoded) === false) {
-                        throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
-                    };
-                    $news->image = Storage::url('/images/news/' . $name);
+            return saveImage($news);
+        });
 
-                    Notification::make()
-                        ->title('[' . $name . '] Image uploadée avec succès.')
-                        ->success()
-                        ->send();
-                } catch (\Exception $e) {
-                    $news->image = null;
-                    Notification::make()
-                        ->title($e->getMessage())
-                        ->danger()
-                        ->send();
-                }
-            }
-            return true;
+        static::updating(function (News $news) {
+            return saveImage($news);
+        });
+
+        static::deleting(function (News $news) {
+            // on supprime (éventuellement) le fichier de l'image
+            return deleteImage($news);
         });
     }
 }

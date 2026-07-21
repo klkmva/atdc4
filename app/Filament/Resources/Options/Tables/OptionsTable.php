@@ -13,7 +13,7 @@ class OptionsTable
     {
         return $table
             ->columns([
-                HtmlColumn::make('user.name')
+                HtmlColumn::make('name')
                     ->verticallyAlignStart()
                     ->width('15%')
                     ->label('Posée par'),

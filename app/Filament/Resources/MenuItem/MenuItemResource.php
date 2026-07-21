@@ -21,7 +21,9 @@ class MenuItemResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected static ?string $recordTitleAttribute = 'Item de menu';
+    protected static ?string $recordTitleAttribute = 'Menu / Page';
+
+    protected static ?string $navigationLabel = 'Menus/Pages';
 
     protected static string | UnitEnum | null $navigationGroup = 'Site';
 

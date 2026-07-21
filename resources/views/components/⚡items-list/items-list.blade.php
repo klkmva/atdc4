@@ -10,7 +10,7 @@
         @if ($path =='/')
         <x-separ>Programme des conférences</x-separ>
         @elseif (preg_match('/\/archives\/search.*/', $path))
-        <x-separ>Résultat de la recherche <span class="max-w-sm ml-2">({{ $search }})</span></x-separ>
+        <x-separ>Résultat de la recherche <span class="max-w-sm ml-2">({{ $search }}) => {{ $items->count() > 0 ? $items->count() . ($items->count() > 1 ? ' items' : ' item') : 'aucun item' }}</span></x-separ>
         @elseif (preg_match('/\/archives.*/', $path))
             @if (isset($year))
             <x-separ>Conférences archivées <span class="max-w-sm ml-2"><livewire:select-year :year="$year" :ymax="$ymax" :ymin="$ymin" /></span></x-separ>

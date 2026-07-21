@@ -25,12 +25,13 @@ class TinyEditor extends Field
 
     public string $placeholder = '';
 
-    public string $toolbar = 'undo redo removeformat | styles | bold italic underline | alignjustify alignleft aligncenter alignright | numlist bullist outdent indent | forecolor backcolor | table hr | image link';
+    public string $toolbar = 'undo redo removeformat | styles | bold italic underline | alignjustify alignleft aligncenter alignright | numlist bullist outdent indent | forecolor backcolor | table hr | image link insertItem';
 
     public string $plugins = 'accordion autoresize advlist link image lists preview pagebreak searchreplace table';
 
     public array $templates = [
-        'default' => '<p></p>',
+        'section' => '<section><h1>titre</h1><p>texte</p></section>',
+        'frame' => '<div class="frame"><p>texte</p></div>',
     ];
 
     public function height(string | int | null $h): static
@@ -81,13 +82,13 @@ class TinyEditor extends Field
         return $this;
     }
 
-    public function toolbar($t): static
+    public function toolbar( string $t): static
     {
         $this->toolbar = $t;
         return $this;
     }
 
-    public function plugins($p): static
+    public function plugins(string $p): static
     {
         $this->plugins = $p;
         return $this;
@@ -101,7 +102,13 @@ class TinyEditor extends Field
 
     public function defaultTemplate(): string
     {
-        return $this->templates['default'] ?? '<p></p>';
+        return $this->templates['section'] ?? '<section><h1>Titre</h1><div><p>Texte</p></div></section>';
+    }
+
+
+    public function initialTemplate(): string
+    {
+        return '<h1>Titre page</h1>' . $this->defaultTemplate();
     }
 
     public function template(string $id): string | null

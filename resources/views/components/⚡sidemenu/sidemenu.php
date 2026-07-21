@@ -5,7 +5,7 @@ use App\Models\MenuItem;
 
 new class extends Component
 {
-    public $items;
+    public array $items;
 
     public function render()
     {
@@ -14,6 +14,22 @@ new class extends Component
 
     public function mount()
     {
-        $this->items = MenuItem::all()->sortBy(['parent_id', 'order']);
+        $parent = 0;
+        $this->items = $this->tree($parent);
+    }
+
+    public function tree(int $parent): array
+    {
+        $result = [];
+        $items = MenuItem::where('parent_id', $parent)->orderBy('order')->get()->toArray();
+        foreach ($items as $item) {
+            if ($item['type'] == 'page') {
+                array_push($result, $item);
+            } else {
+                $item['items'] = $this->tree($item['id']);
+                array_push($result, $item);
+            }
+        }
+        return $result;
     }
 };

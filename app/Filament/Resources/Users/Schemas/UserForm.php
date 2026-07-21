@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class UserForm
 {
@@ -20,6 +23,9 @@ class UserForm
                 TextInput::make('email')
                     ->required()
                     ->label('Email'),
-            ]);
+                Checkbox::make('is_admin')
+                    ->label('Droits d\'administration ?'),
+            ])
+            ->columns(3);
     }
 }

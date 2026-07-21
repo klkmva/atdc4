@@ -27,9 +27,33 @@ class MenuItemForm
                                     ->default('page')
                                     ->required(),
                                 Select::make('parent_id')
+                                    ->options(function (Get $get, string $operation) {
+                                        $result = ['0' => '<aucun> (menu principal)'];
+                                        if ($operation == 'create') {
+                                            $menus = MenuItem::where('type', 'menu')
+                                                ->select('id', 'title')
+                                                ->orderBy('parent_id')
+                                                ->orderBy('order')
+                                                ->get()
+                                                ->toArray();
+                                        } else {
+                                            $menus = MenuItem::where([
+                                                ['type', '=', 'menu'],
+                                                ['id', '<>', $get('id')]])
+                                                ->select('id', 'title')
+                                                ->orderBy('parent_id')
+                                                ->orderBy('order')
+                                                ->get()
+                                                ->toArray();
+                                        }
+                                        foreach ($menus as $menu) {
+                                            $result[$menu['id']] = $menu['title'];
+                                        }
+                                        return $result;
+                                    })
                                     ->label('Menu parent')
                                     ->disabled(fn() => sizeof(MenuItem::where('type', 'menu')->get()) == 0)
-                                    ->relationship(name: 'menuitem', titleAttribute: 'title', ignoreRecord: true),
+                                    ->default(0),
                                 Select::make('order')
                                     ->label('Ordre')
                                     ->options(function (Get $get, string $operation) {
@@ -38,7 +62,9 @@ class MenuItemForm
                                             ($count == 0 ? [0] : [0, $count]) : ($count == 1 ? [0] : [0, $count]);
                                         return $result;
                                     })
-                                    ->default(0)
+                                    ->default(function (Get $get) {
+                                        return MenuItem::where('parent_id', $get('parent_id'))->count();
+                                    })
                                     ->required(),
                                 TextInput::make('url')
                                     ->label('Url')

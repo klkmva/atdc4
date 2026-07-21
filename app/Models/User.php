@@ -37,6 +37,7 @@ class User extends Authenticatable implements FilamentUser, CanResetPassword, Ha
     protected $fillable = [
         'first_name',
         'last_name',
+        'is_admin',
         'remember_token',
         'email',
         'password',
@@ -70,6 +71,7 @@ class User extends Authenticatable implements FilamentUser, CanResetPassword, Ha
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 

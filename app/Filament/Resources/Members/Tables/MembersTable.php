@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Members\Tables;
 
+use App\Filament\Exports\MemberExporter;
 use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\Action;
@@ -12,6 +13,9 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Member;
+use Filament\Actions\ImportAction;
+use App\Filament\Imports\MemberImporter;
+use Filament\Actions\ExportAction;
 
 class MembersTable
 {
@@ -44,20 +48,21 @@ class MembersTable
                     ->requiresConfirmation(),
             ])
             ->toolbarActions([
-                Action::make('pdf-member-list')
-                    ->label('Exporter la liste')
-                    ->icon(Heroicon::OutlinedDocumentArrowDown)
-                    ->tooltip('Exporter la liste des membres actifs (seulement)')
+                ExportAction::make()
+                    ->exporter(MemberExporter::class)
+                    ->color('primary'),
+                ImportAction::make()
+                    ->importer(MemberImporter::class)
+                    ->color('primary'),
+                Action::make('empty')
+                    ->label('Vider la table')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalHeading('Vider la table')
+                    ->modalDescription('Ceci supprimera tous les enregistrements de la table. Cette action est irréversible.')
+                    ->modalSubmitActionLabel('Oui, vider la table')
                     ->action(function () {
-                        $pdf = Pdf::loadView('filament.reports.members', [
-                            'members' => Member::where('echeance', '>=', now())->get(),
-                        ]);
-                        Storage::put('public/members.pdf', $pdf->output());
-                        return Storage::download(
-                            'public/members.pdf',
-                            'adherents.pdf',
-                            [ 'Content-Type' => 'application/pdf', ]
-                        );
+                        Member::query()->delete();
                     }),
             ])
             ->defaultSort('last_name', 'asc');

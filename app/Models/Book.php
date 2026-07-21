@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use \Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Storage;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -43,35 +43,16 @@ class Book extends Model
         parent::boot();
 
         static::saving(function (Book $book) {
-            $image = $book->image;
-            if ($image && preg_match('/^data:.*/', $image)) {
-                try {
-                    $a = explode(',', $image);
-                    $b = explode(";", $a[0]);
-                    $c = explode(":", $b[0]);
-                    $d = explode("/", $c[1]);
-                    $ext = $d[1];
-                    $name = uniqid() . '.' . $ext;
-                    $encoded = $a[count($a) - 1];
-                    $decoded = base64_decode($encoded);
-                    if (Storage::disk('public')->put('/images/books/' . $name, $decoded) === false) {
-                        throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
-                    };
-                    $book->image = Storage::url('/images/books/' . $name);
+            return saveImage($book);
+        });
 
-                    Notification::make()
-                        ->title('[' . $name . '] Image uploadée avec succès.')
-                        ->success()
-                        ->send();
-                } catch (\Exception $e) {
-                    $book->image = null;
-                    Notification::make()
-                        ->title($e->getMessage())
-                        ->danger()
-                        ->send();
-                }
-            }
-            return true;
+        static::updating(function (Book $book) {
+            return saveImage($book);
+        });
+
+        static::deleting(function (Book $book) {
+            // on supprime (éventuellement) le fichier de l'image
+            return deleteImage($book);
         });
     }
 }

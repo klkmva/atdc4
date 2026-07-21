@@ -13,6 +13,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class UserResource extends Resource
@@ -30,6 +31,11 @@ class UserResource extends Resource
     protected static string | UnitEnum | null $navigationGroup = 'Administration';
 
     protected static ?int $navigationSort = 2;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->is_admin;
+    }
 
     public static function form(Schema $schema): Schema
     {

@@ -25,6 +25,12 @@ class MemberExporter extends Exporter
                 ->label('Date d\'adhésion'),
             ExportColumn::make('echeance')
                 ->label('Échéance'),
+            ExportColumn::make('address')
+                ->label('Adresse'),
+            ExportColumn::make('code')
+                ->label('Code postal'),
+            ExportColumn::make('city')
+                ->label('Commune'),
         ];
     }
 

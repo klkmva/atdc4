@@ -94,65 +94,52 @@ class Event extends Model
     {
         parent::boot();
 
+        // à la création d'un évènement
         static::creating(function (Event $event) {
-            if ($event->wasChanged('image')) $this->saveImage($event);
+            // on sauvegarde l'image
+            saveImage($event);
+            // on supprime la date qui n'est plus disponible
             Date::where('date', $event->date)->delete();
             return true;
         });
 
+        // à la mise à jour d'un évènement
         static::updating(function (Event $event) {
-            if ($event->wasChanged('image')) $this->saveImage($event);
-            if ($event->wasChanged('date')) {
-                $old = $event->getOriginal('date');
-                $new = $event->date;
-                if ($old >= today()) {
-                    Date::create(['date' => $old]);
-                }
-                Date::where('date', $new)->delete();
+            saveImage($event);
+            $old_date = $event->getOriginal('date');
+            $new_date = $event->date;
+            $old_canceled = $event->getOriginal('canceled');
+            $new_canceled = $event->canceled;
+            if ($old_date != $new_date) {
+                // if ($old >= today()) {
+                    Date::create(['date' => $old_date]);
+                // }
+                Date::where('date', $new_date)->delete();
             }
-            if ($event->wasChanged('canceled') && $event->canceled && $event->date >= today() && !$event->wasChanged('date')) {
-                Date::create(['date' => $event->date]);
+            if ($old_canceled != $new_canceled) {
+                if ($new_canceled) {
+                    Date::create(['date' => $new_date]);
+                } else {
+                    if (Date::where('date', $new_date)->get()->count() == 0) {
+                        Notification::make()
+                            ->title('La date n\'est pas disponible !')
+                            ->danger()
+                            ->send();
+                        return false;
+                    }
+              
+                    }
             }
             return true;
         });
 
+        // à la suppression d'un évènement
         static::deleting(function (Event $event) {
-            if ($event->date >= today())
+            // on rend la date disponible si l'évènement n'était pas annulé
+            if (!$event->canceled)
                 Date::create(['date' => $event->date]);
-            return true;
+            // on supprime le fichier de l'image
+            return deleteImage($event);
         });
-    }
-
-    public function saveImage(Event $event) {
-        $image = $event->image;
-        if ($image && preg_match('/^data:.*/', $image)) {
-            try {
-                $a = explode(',', $image);
-                $b = explode(";", $a[0]);
-                $c = explode(":", $b[0]);
-                $d = explode("/", $c[1]);
-                $ext = $d[1];
-                $name = uniqid() . '.' . $ext;
-                $encoded = $a[count($a) - 1];
-                $decoded = base64_decode($encoded);
-                if (Storage::disk('public')->put('/images/events/' . $name, $decoded) === false) {
-                    throw new \Exception('Erreur lors de l\'enregistrement de l\'image.');
-                };
-                $event->image = Storage::url('/images/events/' . $name);
-
-                Notification::make()
-                    ->title('[' . $name . '] Image uploadée avec succès.')
-                    ->success()
-                    ->send();
-                return true;
-            } catch (\Exception $e) {
-                $event->image = null;
-                Notification::make()
-                    ->title($e->getMessage())
-                    ->danger()
-                    ->send();
-                return true;
-            }
-        }
     }
 }

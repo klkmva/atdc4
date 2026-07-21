@@ -1,4 +1,5 @@
 @blaze
+
 @use('App\Models\Book')
 @use('App\Models\Publisher')
 
@@ -38,11 +39,14 @@ $publisher = (is_null($book) || is_null($book->publisher_id)) ? '' : Publisher::
                 <div class="p-2 text-right">Éditeur :</div>
                 <div class="p-2 text-left">{{ $publisher }}</div>
                 <div class="p-2 text-right">Date de sortie :</div>
-                <div class="p-2 text-left">{{ !is_null($book) ? $book->publication_date : 'null' }}</div>
+                <div class="p-2 text-left">{{ $book->publication_date }}</div>
                 <div class="p-2 text-right">Auteur(s) :</div>
-                <div class="p-2 text-left">{{ !is_null($book) ? $book->authors : 'null' }}</div>
+                <div class="p-2 text-left">{{ $book->authors }}</div>
                 <div class="p-2 text-right">ISBN :</div>
-                <div class="p-2 text-left">{{ !is_null($book) ? $book->isbn : 'null' }}</div>
+                <div class="p-2 text-left">{{ $book->isbn }}</div>
+                @if ($book->link)
+                    <a target="_blank" href="{{ $book->link }}">{{ $book->link }}</a>
+                @endif
             </div>
             @endif
         </div>

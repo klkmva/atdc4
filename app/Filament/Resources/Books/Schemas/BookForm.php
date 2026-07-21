@@ -31,24 +31,8 @@ class BookForm
                             ->label('Auteurs')
                     ])
                     ->columnSpan(3),
-                Section::make('Image')
+                Section::make('')
                     ->columns(1)
-                    ->afterHeader(
-                        [
-                            Action::make('removeImage')
-                                ->label('')
-                                ->color('danger')
-                                ->icon('heroicon-o-trash')
-                                ->action(function ($record, $form) {
-                                    $record->image = null;
-                                    $record->save();
-                                    $form->fill([
-                                        'image' => null,
-                                    ]);
-                                })
-                                ->hidden(fn ($record) => !$record || !$record->image),
-                        ]
-                    )
                     ->schema([
                         ImageInput::make('image')
                             ->hiddenLabel()

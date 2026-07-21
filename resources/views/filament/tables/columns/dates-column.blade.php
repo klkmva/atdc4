@@ -12,16 +12,16 @@ $dates = $record->dates;
 </div>
 <script>
     async function clicked(id) {
-            if (window.confirm('Ceci créera une nouvelle conférence, bloquera la date et supprimera l\'option.\nVoulez-vous continuer ?')) {
-                document.getElementById('link_' + id).click();
-            }
+        if (window.confirm('Ceci créera une nouvelle conférence, bloquera la date et supprimera l\'option.\nVoulez-vous continuer ?')) {
+            document.getElementById('link_' + id).click();
         }
-        [...document.querySelectorAll('div[validate]')].forEach((div) => {
-            const chld = div.firstChild;
-            if (chld.tagName == 'A') {
-                const content = chld.innerHTML;
-                chld.remove();
-                div.innerHTML = content + div.innerHTML;
-            }
-        })
+    }
+    [...document.querySelectorAll('div[validate]')].forEach((div) => {
+        const chld = div.firstChild;
+        if (chld.tagName == 'A') {
+            const content = chld.innerHTML;
+            chld.remove();
+            div.innerHTML = content + div.innerHTML;
+        }
+    })
 </script>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edition</title>
+    <style>
+        .page
+        {
+            width: 21cm;
+            height: 29.7cm;
+            padding: 1cm;
+        }
+        .selected
+        {
+            outline: 1px solid red;
+        }
+        label
+        {
+            font-family: "Noto Sans";
+            font-size: 10pt;
+        }
+        dialog
+        {
+            position: absolute;
+            border: none;
+            border-radius: 5px;
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body class="page">
+    <div data-menu="font-size" style="font-family: 'Noto Sans'; font-size: 0.42cm;">
+        “Comme on a compris que la liberté d’expression, c'était surtout un joli concept, on s’est dit que c’était mieux
+        d’imaginer chaque émission comme si c’était la dernière”, dit Guillaume Meurice. Avec lui, rendez-vous le dimanche
+        en direct de la Radio Nova et du théâtre L’Européen pour une analyse pointue, objective et impartiale de l’actualité
+        aux côtés de Juliette Arnaud, Aymeric Lompret et Pierre-Emmanuel Barré.
+    </div>
+    <div data-menu="font-size" style="font-family: 'Noto Sans'; font-size: 0.42cm;">
+        “Comme on a compris que la liberté d’expression, c'était surtout un joli concept, on s’est dit que c’était mieux
+        d’imaginer chaque émission comme si c’était la dernière”, dit Guillaume Meurice. Avec lui, rendez-vous le dimanche
+        en direct de la Radio Nova et du théâtre L’Européen pour une analyse pointue, objective et impartiale de l’actualité
+        aux côtés de Juliette Arnaud, Aymeric Lompret et Pierre-Emmanuel Barré.
+    </div>
+    <dialog id="menubar" style="width: fit-content; height: fit-content;">
+        <label for="fsize">Taille police</label>
+        <button data-func="fsize" id="fsizedn">-</button><button data-func="fsize" id="fsizeup">+</button>
+    </dialog>
+    <script>
+        const menuBar = {
+            dial: null,
+            init: function() {
+                if (!this.dial) {
+                    dial = document.createElement('dialog');
+                    this.elements.forEach((elem) => {
+                        dial.appendChild(elem);
+                    })
+                }
+            },
+            config: function(ids) {
+                ids.split(' ').forEach((id) => {
+                    switch (id) {
+                        case 'fsize': {
+
+                        }
+                    }
+                })
+            },
+            elements: {
+                'fsize': function() {
+                    lb = document.createElement('label');
+                    lb.innerText = 'Taille police';
+                    bt0 = document.createElement('button');
+                    bt0.innerText = '-';
+                    bt0.addEventListener('click', (e) => {
+                        const elem = document.querySelector('.selected');
+                        if (!elem) return;
+                        const fsize = window.getComputedStyle(elem).fontSize;
+                        const matches = fsize.match(/^([0-9\.]*)(.*)/);
+                        const value = parseFloat(matches[1]);
+                        elem.style.fontSize = (value * 0.95).toString() + matches[2];
+                    });
+                    bt1 = document.createElement('button');
+                    bt1.innerText = '-';
+                    bt1.addEventListener('click', (e) => {
+                        const elem = document.querySelector('.selected');
+                        if (!elem) return;
+                        const fsize = window.getComputedStyle(elem).fontSize;
+                        const matches = fsize.match(/^([0-9\.]*)(.*)/);
+                        const value = parseFloat(matches[1]);
+                        elem.style.fontSize = (value * 1.05).toString() + matches[2];
+                    });
+                    const div = document.createElement('div');
+                    div.style = 'display: none';
+                    div.appendChild(lb);
+                    div.appendChild(bt0);
+                    div.appendChild(bt1);
+                    return div;
+                }
+            }
+        }
+        window.addEventListener('load', () => {
+            [...document.querySelectorAll('div[data-menu]')].forEach( (el) => {
+                el.setAttribute('contenteditable', true);
+                el.addEventListener('focus', (e) => {
+                    const target = e.currentTarget;
+                    [...document.querySelectorAll('.selected')].forEach((sel) => {
+                        sel.classList.toggle('selected')
+                    })
+                    target.classList.add('selected');
+                    menubar(target, true);
+                })
+            });
+            [...document.querySelectorAll('[data-func="fsize"]')].forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    const elem = document.querySelector('.selected');
+                    console.log(elem);
+                    if (!elem) return;
+                    const bt = e.currentTarget;
+                    const fsize = window.getComputedStyle(elem).fontSize;
+                    const matches = fsize.match(/^([0-9\.]*)(.*)/);
+                    const value = parseFloat(matches[1])
+                    const style = elem.style;
+                    if (bt.id=='fsizeup') {
+                        var mult = 1.05;
+                    }
+                    else {
+                        var mult = 0.95;;
+                    }
+                    elem.style.fontSize = (value * mult).toString() + matches[2];                  
+                })
+            })
+        });
+        function menubar(el, state) {
+            const menubar = document.getElementById('menubar').show();
+            if (!state) {
+                menubar.close();
+                return;
+            }
+            
+        }
+        async function test() {
+            const $resp = await fetch('testconn.php');
+            console.log($resp.body);
+        }
+        test();
+    </script>
+</body>
+</html>

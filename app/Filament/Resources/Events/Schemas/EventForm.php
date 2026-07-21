@@ -40,13 +40,13 @@ class EventForm
                                     ->columns(6)
                                     ->schema([
                                         DatePicker::make('date')
-                                            ->label('date')
+                                            ->label('Date')
+                                            ->native(false)
                                             ->required()
                                             ->closeOnDateSelection(true)
-                                            ->displayFormat('ddd d/m/Y')
                                             ->locale('fr')
                                             ->disabled(fn($operation, $rawState) => ($operation != 'create' && $rawState < \now()))
-                                            ->displayFormat('ddd d/m/Y')
+                                            ->displayFormat('D d/m/Y')
                                             ->columnSpan(1)
                                             ->rules([
                                                 fn ($operation): Closure => function ($attribute, $value, Closure $fail) use ($operation) {
@@ -58,16 +58,17 @@ class EventForm
                                                     }
                                                 }
                                             ]),
-                                        TextInput::make('time')
-                                            ->label('Heure de début')
+                                        TimePicker::make('time')
+                                            ->label('Heure')
+                                            ->required()
                                             ->default('19:00')
-                                            ->mask('99:99')
-                                            ->regex('/[0-2][0-9]:[0-5][0-9]/')
-                                            ->columnSpan(1),
+                                            ->columnSpan(1)
+                                            ->seconds(false),
                                         Select::make('location_id')
                                             ->label('Lieu')
                                             ->relationship('location', 'name')
                                             ->placeholder('Sélectionner un lieu')
+                                            ->default(1)
                                             ->createOptionForm([
                                                 Grid::make([2])
                                                     ->schema(LocationForm::configure(new Schema())->getComponents())
@@ -84,7 +85,7 @@ class EventForm
                                             ->reactive()
                                             ->afterStateUpdated(function (string|null $state, Get $get, Set $set) {
                                                 if (!$state) return;
-                                                $book = Book::where('id', $state)->first();
+                                                $book = Book::find($state);
                                                 if ($book) {
                                                     if ($get('title') == '') {
                                                         $set('title', $book->title);
@@ -94,6 +95,9 @@ class EventForm
                                                     }
                                                     if ($get('info') == '') {
                                                         $set('info', $book->summary);
+                                                    }
+                                                    if ($get('image') == null) {
+                                                        $set('image', $book->image);
                                                     }
                                                 }
                                             })
@@ -114,28 +118,12 @@ class EventForm
                                             ->placeholder('Sous-titre de l\'événement'),
                                     ])->columnSpan(3),
 
-                                Section::make('Image')
+                                Section::make()
                                     ->columns(1)
-                                    ->afterHeader(
-                                        [
-                                            Action::make('removeImage')
-                                                ->label('')
-                                                ->color('danger')
-                                                ->icon('heroicon-o-trash')
-                                                ->action(function ($record, $form) {
-                                                    $record->image = null;
-                                                    $record->save();
-                                                    $form->fill([
-                                                        'image' => null,
-                                                    ]);
-                                                })
-                                                ->hidden(fn($record) => !$record || !$record->image),
-                                        ]
-                                    )
                                     ->schema([
                                         ImageInput::make('image')
                                             ->hiddenLabel()
-                                            ->size('100px')
+                                            ->size('150px')
                                             ->live()
                                             ->reactive()
                                     ])->columnSpan(1),
@@ -171,7 +159,7 @@ class EventForm
                                     ])
                                     ->columnSpan(2),
 
-                                FieldSet::make('Statut de l\'événement')
+                                Section::make('Statut de l\'événement')
                                     ->columns(2)
                                     ->schema([
                                         Checkbox::make('published')
@@ -185,7 +173,7 @@ class EventForm
                             ->schema([
                                 Grid::make(2)
                                     ->schema([
-                                        FieldSet::make('')
+                                        Section::make('')
                                             ->columns(1)
                                             ->contained(false)
                                             ->schema([

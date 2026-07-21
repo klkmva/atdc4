@@ -27,6 +27,7 @@ class NewsForm
                             ->columnSpan(1),
                         TimePicker::make('time')
                             ->label('heure')
+                            ->default('00:00')
                             ->columnSpan(1)
                             ->seconds(false),
                         TextInput::make('title')
@@ -50,28 +51,12 @@ class NewsForm
                     ])
                     ->columns(6)
                     ->columnSpan(4),
-                Section::make('Image')
+                Section::make()
                     ->columns(1)
-                    ->afterHeader(
-                        [
-                            Action::make('removeImage')
-                                ->label('')
-                                ->color('danger')
-                                ->icon('heroicon-o-trash')
-                                ->action(function ($record, $form) {
-                                    $record->image = null;
-                                    $record->save();
-                                    $form->fill([
-                                        'image' => null,
-                                    ]);
-                                })
-                                ->hidden(fn($record) => !$record || !$record->image),
-                        ]
-                    )
                     ->schema([
                         ImageInput::make('image')
                             ->hiddenLabel()
-                            ->size('100px')
+                            ->size('150px')
                             ->live()
                             ->reactive()
                     ])->columnSpan(1),
