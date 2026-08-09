@@ -108,7 +108,7 @@ class TinyEditor extends Field
 
     public function initialTemplate(): string
     {
-        return '<h1>Titre page</h1>' . $this->defaultTemplate();
+        return '<h1 class="title">Titre page</h1><p></p>' . $this->defaultTemplate();
     }
 
     public function template(string $id): string | null

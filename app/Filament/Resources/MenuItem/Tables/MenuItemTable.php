@@ -15,7 +15,7 @@ class MenuItemTable
             ->columns([
                 TextColumn::make('type')
                     ->label('Type'),
-                TextColumn::make('parent_id')
+                TextColumn::make('parent.title')
                     ->label('Menu parent'),
                 TextColumn::make('order')
                     ->label('Ordre'),

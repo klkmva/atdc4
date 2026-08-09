@@ -73,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandLogo(asset('icons/logo.png'))
+            ->brandLogo(asset('/images/icons/logo.png'))
             ->brandLogoHeight('40px')
             ->sidebarCollapsibleOnDesktop(true)
             ->maxContentWidth(Width::Full)

@@ -1,17 +1,12 @@
 {
     "agents": [
-        "copilot"
+        "claude_code"
     ],
-    "guidelines": true,
-    "herd_mcp": false,
+    "cloud": false,
     "mcp": true,
-    "nightwatch_mcp": false,
+    "nightwatch": false,
     "packages": [
         "filament/filament"
     ],
-    "sail": false,
-    "skills": [
-        "fluxui-development",
-        "tailwindcss-development"
-    ]
+    "sail": false
 }

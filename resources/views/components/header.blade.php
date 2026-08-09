@@ -1,12 +1,16 @@
 @blaze
 
+@php
+$logo = asset('/images/icons/logo.png');
+@endphp
+
 <flux:modal name="search" class="sm:w-[50vw] w-[80vw]" flyout variant="floating">
     <livewire:search />
 </flux:modal>
 <flux:header container sticky class="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700 w-full">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
-    <flux:brand logo="/storage/images/icons/logo.png" name="ATDC" class="max-lg:hidden dark:hidden w-max" />
-    <flux:brand logo="/storage/images/icons/logo.png" name="ATDC" class="max-lg:hidden! hidden dark:flex w-max" />
+    <flux:brand logo="{{ $logo }}" name="ATDC" class="max-lg:hidden dark:hidden w-max" />
+    <flux:brand logo="{{ $logo }}" name="ATDC" class="max-lg:hidden! hidden dark:flex w-max" />
     <livewire:menu />
 </flux:header>
 
@@ -14,8 +18,8 @@
     <flux:sidebar.header>
         <flux:sidebar.brand
             href="/"
-            logo="/storage/images/icons/logo.png"
-            logo:dark="/storage/images/icons/logo.png"
+            logo="{{ $logo }}"
+            logo:dark="{{ $logo }}"
             name="Atdc" />
         <flux:modal.trigger name="search">
             <flux:icon.magnifying-glass class="me-5" x-on:click="$flux.modal('search').show()" />

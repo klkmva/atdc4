@@ -5,7 +5,7 @@ use App\Models\MenuItem;
 
 new class extends Component
 {
-    public $content;
+    public string|null $content;
 
     public function mount($page)
     {

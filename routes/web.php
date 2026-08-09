@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Speaker;
+use App\Models\Book;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +27,7 @@ Route::get('/query', function (Request $request) {
     //  - passe : les évènements passés
     //  - all : tous les évènements
     $select = $request->query('select', 'futur');
-    $where = $select == 'futur' ? ' where date >= current_date() ' : ($select == 'passe' ? ' where date < current_date() ' : '');
+    $where = ' canceled=0 and published=1' . ($select == 'futur' ? ' and date >= current_date() ' : ($select == 'passe' ? ' and date < current_date() ' : ''));
 
     // Les évènements sont triés par date ascendantes (asc) ou descendantes (desc)
     $order = $request->query('order', $select == 'passe' ? 'desc' : 'asc');
@@ -66,3 +68,15 @@ Route::post('/reset-password', function (Request $request) {
         ? redirect()->route('login')->with('status', __($status))
         : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
+
+Route::get('/convert', function (Request $request) {
+    Event::all()->map(function ($item) {
+        echo convert2webp($item) . '<br>';
+    });
+    Speaker::all()->map(function ($item) {
+        echo convert2webp($item) . '<br>';
+    });
+    Book::all()->map(function ($item) {
+        echo convert2webp($item) . '<br>';
+    });
+});

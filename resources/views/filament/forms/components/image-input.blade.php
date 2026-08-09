@@ -38,10 +38,10 @@
 
             let inter = (a, b) => {
                 if (imgInput.value && image.getAttribute('src') != imgInput.value)
-                    image.setAttribute('src', '/images' + imgInput.value);
+                    image.setAttribute('src', imgInput.value);
             }
 
-            const urlimage = '/icons/image.svg'
+            const urlimage = '/images/icons/image.svg'
             const imgPath='{{ $field->getImgPath() }}';
             
             const container = $refs.container;
@@ -50,7 +50,6 @@
             const imgInput = $refs.imageInput;
             const delbutton = $refs.delbutton;
 
-            //const loop = scriptPolicy.createScript('if (imageInput.value && image.getAttribute(\'src\') != imageInput.value) image.setAttribute(\'src\', imageInput.value)');
             setInterval(inter, 0.5);
 
             container.setAttribute('style',
@@ -112,7 +111,8 @@
                 attributes: true,
                 attributeOldValue: true,
             });
-            image.setAttribute('src', state === null ? urlimage : '/images' + state );
+            console.log('state', state);
+            image.setAttribute('src', state === null ? urlimage : state );
 
             container.addEventListener('paste', (e) => {
                 e.preventDefault();

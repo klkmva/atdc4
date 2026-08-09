@@ -28,19 +28,36 @@ new class extends Component
         } else {
             if ($this->path == '/') {
                 $today = Carbon::today()->isoFormat('YYYY-MM-DD');
-                return $this->view(['items' => Event::where('date', '>=', $today)->orderBy('date', 'asc')->get()]);
+                return $this->view(['items' => 
+                    Event::where('date', '>=', $today)
+                    ->where('published', 1)
+                    ->orderBy('date', 'asc')
+                    ->get()]);
             } else {
                 if ($this->year) {
                     $yesterday = Carbon::yesterday()->isoFormat('YYYY-MM-DD');
-                    return $this->view(['items' => Event::where('date', '<=', $yesterday)->where('date', 'LIKE', $this->year . '%')->orderBy('date', 'desc')->get()]);
+                    return $this->view(['items' => 
+                        Event::where('date', '<=', $yesterday)
+                            ->where('published', 1)
+                            ->where('date', 'LIKE', $this->year . '%')
+                            ->orderBy('date', 'desc')
+                            ->get()]);
                 } else {
                     if ($this->search && $this->model) {
                         if ($this->model == 'event') {
-                            return $this->view(['items' => Event::whereRaw("MATCH (title, subtitle, info) AGAINST('" . $this->search . "' IN BOOLEAN MODE)")->orderBy('date', 'desc')->get()]);
+                            return $this->view(['items' => 
+                                Event::whereRaw("MATCH (title, subtitle, info) AGAINST('" . $this->search . "' IN BOOLEAN MODE)")
+                                    ->where('published', 1)
+                                    ->orderBy('date', 'desc')
+                                    ->get()]);
                         } else {
                             $speakers = Speaker::query()->whereRaw("MATCH (first_name, last_name) AGAINST('". $this->search . "' IN BOOLEAN MODE)")->pluck('id')->all();
                             $events = EventSpeaker::whereIn('speaker_id', $speakers)->pluck('event_id')->all();
-                            return $this->view(['items' => Event::whereIn('id', $events)->orderBy('date', 'desc')->get()]);
+                            return $this->view(['items' => 
+                                Event::whereIn('id', $events)
+                                ->where('published', 1)
+                                ->orderBy('date', 'desc')
+                                ->get()]);
                         }
                     }
                 }

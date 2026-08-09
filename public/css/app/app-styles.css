@@ -68,17 +68,37 @@ div.canceled
     rotate: -25deg;
 }
 
+div[x-ref='pcontainer']
+{
+    padding: calc(var(--spacing) * 5) !important;
+}
+
+h1.title
+{
+    text-align: center;
+    font-size: var(--text-3xl) !important;
+    margin-block: 1rem;
+}
+
 section
 {
-    margin-block: 2em;
-    padding-inline: 1em;
+    margin-block: 1em;
+    padding-inline: 3em;
 }
 
 section h1
 {
-    font-weight: bold;
-    font-size: large;
-    margin-bottom: 1em;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-lg) !important;
+    font-style: italic;
+    padding-left: 2rem;
+}
+
+section h1::before
+{
+    content: '●';
+    margin-right: 1rem;
+    color: var(--color-red-800);
 }
 
 div.frame
