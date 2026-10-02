@@ -10,7 +10,7 @@ use App\Filament\Forms\Components\ImageInput;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Section;
-use App\Filament\Resources\Books\Schemas\BookForm;
+use App\Filament\Clusters\Books\Resources\Books\Schemas\BookForm;
 use Filament\Schemas\Components\Grid;
 use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Builder;

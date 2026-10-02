@@ -27,7 +27,7 @@ class EventFactory extends Factory
             'published' => fake()->boolean(99),
             'canceled' => false,
             'book_id' => null,
-            'video' => null,
+            'youtube_id' => null,
         ];
     }
 }

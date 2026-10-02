@@ -9,7 +9,7 @@
         </h2>
         <div>
             @if ($item->image)
-            <x-image type="news" src="{{ asset('images' . $item->image) }}" alt="" style="float:inline-start" margin="mr-[10px] mb-[5px]" maxsize="max-h-[150px]" />
+            <x-image type="news" src="{{ asset($item->image) }}" alt="" style="float:inline-start" margin="mr-[10px] mb-[5px]" maxsize="max-h-[150px]" />
             @endif
             @if ($item->info)
             {{ render::make($item->info) }}

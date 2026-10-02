@@ -356,7 +356,7 @@ return new class extends Migration
                 ->onDelete('set null')
                 ->onUpdate('cascade');
             $table->string('image')->nullable();
-            $table->string('video')->nullable();
+            $table->string('youtube_id')->nullable();
             $table->boolean('published')->default(1);
             $table->boolean('canceled')->default(0);
             $table->integer('spectators_counter', false, true)->nullable()->default(0);

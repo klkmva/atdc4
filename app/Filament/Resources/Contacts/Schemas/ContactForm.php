@@ -14,19 +14,21 @@ class ContactForm
         return $schema
             ->components([
                 Section::make('Identité')
+                    ->description()
                     ->columns(2)
                     ->schema([
                         TextInput::make('last_name')
-                            ->label('Nom')
+                            ->hiddenLabel()
                             ->placeholder('Nom du contact')
                             ->required()
                             ->maxLength(255),
                         TextInput::make('first_name')
-                            ->label('Prénom')
+                            ->hiddenLabel()
                             ->placeholder('Prénom du contact')
                             ->maxLength(255),
                     ])->columnSpan(2),
                 Section::make('Coordonnnées')
+                    ->description()
                     ->columns(3)
                     ->columnSpanFull()
                     ->schema([
@@ -36,7 +38,7 @@ class ContactForm
                             ->email()
                             ->maxLength(255),
                         TextInput::make('phone1')
-                            ->label('Téléphone')
+                            ->label('Téléphone(s)')
                             ->placeholder('Numéro de téléphone')
                             ->maxLength(50),
                         TextInput::make('company')

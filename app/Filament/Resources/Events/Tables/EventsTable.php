@@ -3,12 +3,11 @@
 namespace App\Filament\Resources\Events\Tables;
 
 use Filament\Actions\DeleteAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Tables\Columns\CopyUrlAnnonce;
 
 class EventsTable
 {
@@ -26,6 +25,9 @@ class EventsTable
                 TextColumn::make('title')
                     ->label('Titre')
                     ->searchable(),
+                CopyUrlAnnonce::make('annonce')
+                    ->label('')
+                    ->width('3rem'),
             ])
             ->filters([
                 Filter::make('à venir')

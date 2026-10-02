@@ -14,7 +14,7 @@ $height = ($speaker->info == '') ? ($speaker->image == null || $speaker->image =
         <div class="grid grid-cols-2">
             @if ($speaker->image)
             <div class="m-2 h-auto">
-                <flux:avatar src="{{ asset('images' . $speaker->image) }}" alt="Photo de l'intervenant" size="xl" />
+                <flux:avatar src="{{ asset($speaker->image) }}" alt="Photo de l'intervenant" size="xl" />
             </div>
             @endif
             <div class="font-semibold sm:text-xl lg:text-2xl text-base">{{ $speaker->full_name }}</div>
@@ -28,7 +28,7 @@ $height = ($speaker->info == '') ? ($speaker->image == null || $speaker->image =
             <div class="flex flex-row w-full">
                 @if ($speaker->image)
                 <div class="m-2 h-auto">
-                    <flux:avatar src="{{ asset('images' . $speaker->image) }}" alt="Photo de l'intervenant" size="xl" />
+                    <flux:avatar src="{{ asset($speaker->image) }}" alt="Photo de l'intervenant" size="xl" />
                 </div>
                 @endif
                 <div class="font-semibold sm:text-xl lg:text-2xl text-base ml-2 pt-2">{{ $speaker->full_name }}</div>

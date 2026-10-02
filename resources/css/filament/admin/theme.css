@@ -51,4 +51,28 @@
     {
         background-color: var(--color-zinc-800) !important;
     }
+    .fi-select-input-value-ctn
+    {
+        overflow-x: hidden !important;
+        text-wrap: nowrap !important;
+    }
+
+    .fi-select-input-value-ctn .fi-select-input-value-label
+    {
+        overflow-x: hidden !important;
+        text-wrap: nowrap !important;
+    }
+}
+
+.notifier
+{
+    position: absolute;
+    top: 80vh;
+    right: 100px;
+    width: max-content;
+    padding: 10px;
+    background-color: oklch(37.3% 0.034 259.733);
+    color: oklch(95.4% 0.038 75.164);
+    opacity: 0;
+    border-radius: 5px;
 }

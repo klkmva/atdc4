@@ -29,3 +29,4 @@ vite.config.js
 AGENT.md
 boost.json
 /storage
+/database/migrations.backup

@@ -24,24 +24,25 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
-    {        
+    {
         FilamentTimezone::set('Europe/Paris');
 
         FilamentAsset::register([
             Css::make('philosopher-font', 'https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap'),
             Js::make('platform', 'https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.5/platform.min.js'),
+            Js::make('copy_script', __DIR__ . '/../../resources/js/copy_notify.js'),
         ]);
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_END,
             fn() => view('flux.flux-script')
         );
-        
+
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
             fn() => view('flux.flux-styles')

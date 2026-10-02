@@ -14,3 +14,17 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer components {
+    .fi-select-input-value-ctn
+    {
+        overflow-x: hidden !important;
+        text-wrap: nowrap !important;
+    }
+    .fi-select-input-value-ctn .fi-select-input-value-label
+    {
+        overflow-x: hidden !important;
+        text-wrap: nowrap !important;
+    }
+}
+

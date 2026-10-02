@@ -25,7 +25,7 @@ class NewsResource extends Resource
 
     protected static ?string $modelLabel = 'Actualité';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {

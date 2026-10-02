@@ -17,7 +17,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use App\Filament\Forms\Components\ImageInput;
 use Filament\Actions\Action;
 use App\Filament\Resources\Locations\Schemas\LocationForm;
-use App\Filament\Resources\Books\Schemas\BookForm;
+use App\Filament\Clusters\Books\Resources\Books\Schemas\BookForm;
 use App\Filament\Resources\Speakers\Schemas\SpeakerForm;
 use App\Filament\Resources\Partners\Schemas\PartnerForm;
 use App\Models\Date;
@@ -79,7 +79,13 @@ class EventForm
                                             ->relationship('book', 'title')
                                             ->columnSpan(2)
                                             ->placeholder('Sélectionner un ouvrage')
-                                            ->searchable('title')
+                                            ->searchable()
+                                            ->getSearchResultsUsing(fn(string $search): array => Book::query()
+                                                ->where('title', 'like', "%{$search}%")
+                                                ->orWhere('subtitle', 'like', "%{$search}%")
+                                                ->limit(50)
+                                                ->pluck('title', 'id')
+                                                ->all())
                                             ->searchingMessage('Recherche un ouvrage...')
                                             ->preload()
                                             ->reactive()
@@ -138,8 +144,9 @@ class EventForm
                                     ->multiple()
                                     ->relationship('speakers', 'full_name')
                                     ->searchable(['first_name', 'last_name'])
-                                    ->searchingMessage('Recherche des intervenants...')
+                                    ->searchingMessage('Recherche un intervenant...')
                                     ->preload()
+                                    ->reactive()
                                     ->createOptionForm([
                                         Grid::make([4])
                                             ->schema(SpeakerForm::configure(new Schema())->getComponents())
@@ -150,9 +157,10 @@ class EventForm
                                     ->label('Partenaires')
                                     ->multiple()
                                     ->relationship('partners', 'name')
-                                    ->searchable('name')
+                                    ->searchable(['name', 'short_name'])
                                     ->searchingMessage('Recherche un partenaire...')
                                     ->preload()
+                                    ->reactive()
                                     ->createOptionForm([
                                         Grid::make([2])
                                             ->schema(PartnerForm::configure(new Schema())->getComponents())
@@ -171,17 +179,23 @@ class EventForm
                         Tab::make('Bilan')
                             ->extraAttributes(fn(Get $get) => $get('date') > today() ? ['disabled' => true] : [])
                             ->schema([
-                                Grid::make(2)
+                                Grid::make(6)
                                     ->schema([
-                                        Section::make('')
+                                        Section::make('Spectateurs')
                                             ->columns(1)
-                                            ->contained(false)
                                             ->schema([
                                                 TextInput::make('spectators_counter')
-                                                    ->label('Nombre de spectateurs'),
-                                                TextInput::make('video')
-                                                    ->label('Url vidéo'),
-                                            ]),
+                                                    ->label('Nombre')
+                                                    ->columnSpan(1),
+                                            ])->columnSpan(1),
+                                        Section::make('Vidéo')
+                                            ->columns(2)
+                                            ->schema([
+                                                TextInput::make('youtube_id')
+                                                    ->label('ID Youtube'),
+                                                TextInput::make('dailymotion_id')
+                                                    ->label('ID Dailymotion'),
+                                            ])->columnSpan(2),
                                         Section::make('Coûts')
                                             ->columns(3)
                                             ->schema([
@@ -191,7 +205,7 @@ class EventForm
                                                     ->label('Hébergement'),
                                                 TextInput::make('meal_cost')
                                                     ->label('Repas'),
-                                            ]),
+                                            ])->columnSpan(3),
                                     ])
                             ]),
                     ])->columnSpanFull()

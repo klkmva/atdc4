@@ -34,6 +34,23 @@ function saveImage(Model &$model) {
             ->send();
         }
     }
+    else {
+        if (preg_match('/.*?openapi\.bnf\.fr\/couverture.*/', $fimage)) {
+            $name = uniqid() . '.webp';
+            $image = Image::fromUrl($fimage);
+            $ratio = $image->width() / $image->height();
+            $dim = env('IMG_SIZE', 200);
+            $image->resize(width: $dim, height: $dim / $ratio)
+                ->toWebp()
+                ->storePubliclyAs($folder, $name, 'images');
+            $model->image = "/images/{$folder}/{$name}";
+
+            Notification::make()
+                ->title('[' . $name . '] Image sauvegardée avec succès.')
+                ->success()
+                ->send();
+        }
+    }
     return true;
 }
 

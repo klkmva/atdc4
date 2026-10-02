@@ -5,6 +5,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Speaker;
+use App\Models\Partner;
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 class Event extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'date',
         'time',
@@ -23,7 +26,8 @@ class Event extends Model
         'Location_id',
         'book_id',
         'image',
-        'video',
+        'youtube_id',
+        'dailymotion_id',
         'published',
         'canceled',
         'spectators_counter',
@@ -49,13 +53,13 @@ class Event extends Model
     {
         return $this->belongsToMany(Speaker::class)->withPivot([])->using(EventSpeaker::class);
     }
-    
+
     public function partners(): BelongsToMany
     {
         return $this->belongsToMany(Partner::class)->withPivot([])->using(EventPartner::class);
     }
 
-    protected function shortdate(): Attribute 
+    protected function shortdate(): Attribute
     {
         return Attribute::make(
             get: fn() => ucFirst(Carbon::parse($this->date)->locale('fr_FR')->isoFormat('ddd Do MMM YYYY'))
@@ -127,7 +131,7 @@ class Event extends Model
                             ->send();
                         return false;
                     }
-              
+
                     }
             }
             return true;

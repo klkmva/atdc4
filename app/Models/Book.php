@@ -19,6 +19,7 @@ class Book extends Model
         'publisher_id',
         'summary',
         'publication_date',
+        'isbn',
         'publisher_id',
         'link',
         'image',
