@@ -19,15 +19,11 @@ class BookResource extends Resource
 {
     protected static ?string $cluster = BooksCluster::class;
     protected static ?string $model = Book::class;
-
     protected static string|BackedEnum|null $navigationIcon = 'phosphor-books-bold';
-
+    protected static ?string $navigationLabel = 'Liste';
     protected static ?string $recordTitleAttribute = 'Ouvrage';
-
     protected static ?string $breadcrumb = 'Ouvrage';
-
     protected static ?string $modelLabel = 'Ouvrage';
-
     protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema

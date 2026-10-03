@@ -10,7 +10,7 @@ class BooksCluster extends Cluster
 {
     protected static string|BackedEnum|null $navigationIcon = 'phosphor-books-bold';
     protected static ?string $navigationLabel = 'Ouvrages';
-    protected static ?string $clusterBreadcrumb = 'ouvrages';
+    protected static ?string $clusterBreadcrumb = 'Ouvrages';
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
     protected static ?int $navigationSort = 2;
 }

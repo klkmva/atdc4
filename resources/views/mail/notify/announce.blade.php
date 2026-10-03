@@ -3,16 +3,20 @@
 @props([
 'event' => null,
 'type' => null,
-'speaktext' => 'toto',
 ])
 @use('\Filament\Forms\Components\RichEditor\RichContentRenderer', 'render')
 @php
 $speakers = $event->speakers;
 $size = sizeof($speakers);
-$speaktext = $speakers[0]->full_name;
-//for ($i=0; $i<$size; $i++) {
-    // $speaktext=$speaktext . $speakers[$i]->full_name . ($i==$size -1 && $size > 1) ? ' et ' : (($size > 1) ? ', ' : '');
-    //}
+if ($size > 0) {
+$speaktext = 'Conférence de ' . $speakers[0]->full_name;
+for ($i=1; $i<$size; $i++) {
+    $speaktext=$speaktext . (($i==$size-1) ? ' et ' : ', ' ) . $speakers[$i]->full_name;
+    }
+    }
+    else
+    $speaktext = '';
+    $app_url = ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'];
     @endphp
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
@@ -62,6 +66,13 @@ $speaktext = $speakers[0]->full_name;
             font-weight: 800;
         }
 
+        .subtitle {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2em;
+            font-style: italic;
+            text-align: center;
+        }
+
         .speakers {
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             font-size: 2.3em;
@@ -82,23 +93,43 @@ $speaktext = $speakers[0]->full_name;
             max-height: 200px;
         }
 
+        .foot {
+            text-align: center;
+            font-size: 90%;
+            font-style: normal;
+            padding-block: 5px;
+            border-bottom: 1px lightgray solid;
+        }
+
         @media (prefers-color-scheme: dark) {
             body {
                 background-color: #1e1c1e;
                 color: #eaecea;
             }
 
+            a {
+                color: red;
+            }
         }
     </style>
 
     <div class="entete">
-        <img src="{{ env('APP_URL') }}/images/icons/logo.png" alt="logo des ATDC" width="30px" height="30px" />
+        <img src="{{ $app_url }}/images/icons/logo.png" alt="logo des ATDC" width="30px" height="30px" />
         <div class="brand">Les Amis du Temps des Cerises</div>
     </div>
     <div class="body">
         <div class="date">{{ $event->long_date }}</div>
         <div class="place">{{ $event->location->full_name }}</div>
-        <div class="speakers">Conférence de {{ $speaktext }}</div>
-        <div class="title">{{ $event->title }}<br /><br /></div>
-        <div class="info"><img src="{{ env('APP_URL') . $event->image }}" alt="Image de la conférence">{{ render::make($event->info) }}</div>
+        <div class="speakers">{{ $speaktext }}</div>
+        <div class="title">{{ $event->title }}</div>
+        @if ($event->subtitle)
+        <div class="subtitle">{{ $event->subtitle }}</div>
+        @endif
+        <div class="info">
+            @if ($event->image)
+            <img src="{{ $app_url . $event->image }}" alt="Image de la conférence" onerror="this.style='display:none';" />
+            @endif
+            {{ render::make($event->info) }}
+        </div>
     </div>
+    <div class="foot">Retrouvez toutes nos conférences sur <a href="https://amisdutempsdescerises.org" target="_blank">https://amisdutempsdescerises.org</a>.</div>
