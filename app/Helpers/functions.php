@@ -17,7 +17,7 @@ function saveImage(Model &$model) {
             $image = Image::fromBase64($encoded);
             $ratio = $image->width() / $image->height();
             $dim = env('IMG_SIZE', 200);
-            $image->resize(width: $dim, height: $dim/$ratio)
+            $image->resize(width: $dim, height: $dim / $ratio)
                 ->toWebp()
                 ->storePubliclyAs($folder, $name, 'images');
             $model->image = "/images/{$folder}/{$name}";
@@ -26,16 +26,18 @@ function saveImage(Model &$model) {
             ->title('[' . $name . '] Image sauvegardée avec succès.')
             ->success()
             ->send();
+            return true;
         } catch (\Exception $e) {
             $model->image = null;
             Notification::make()
             ->title($e->getMessage())
             ->danger()
             ->send();
+            return false;
         }
     }
-    else {
-        if (preg_match('/.*?openapi\.bnf\.fr\/couverture.*/', $fimage)) {
+    elseif (preg_match('/.*?openapi\.bnf\.fr\/couverture.*/', $fimage)) {
+        try {
             $name = uniqid() . '.webp';
             $image = Image::fromUrl($fimage);
             $ratio = $image->width() / $image->height();
@@ -49,9 +51,19 @@ function saveImage(Model &$model) {
                 ->title('[' . $name . '] Image sauvegardée avec succès.')
                 ->success()
                 ->send();
+            return true;
+        }
+        catch (\Exception $e) {
+            $model->image = null;
+            Notification::make()
+                ->title($e->getMessage())
+                ->danger()
+                ->send();
+            return false;
         }
     }
-    return true;
+    else
+        return true;
 }
 
 function deleteImage(Model $model) {

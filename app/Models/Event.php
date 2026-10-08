@@ -98,10 +98,15 @@ class Event extends Model
     {
         parent::boot();
 
-        // à la création d'un évènement
+        // avant la création d'un évènement
         static::creating(function (Event $event) {
             // on sauvegarde l'image
             saveImage($event);
+            return true;
+        });
+
+        // après la création d'un évènement
+        static::created(function (Event $event) {
             // on supprime la date qui n'est plus disponible
             Date::where('date', $event->date)->delete();
             return true;

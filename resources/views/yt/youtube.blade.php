@@ -1,28 +1,45 @@
 @blaze
 
 @props([
-'info'
+'result'
 ]);
 
-@foreach ($info as $i)
-@switch($i[0])
-@case('0')
-<p><span class="text-green-500">Données à jour : {{ $i[1] }}</span></p>
-@break
-@case('1')
-<p><span class="text-blue-500">Données mise à jour : {{ $i[1] }}</span></p>
-@break
-@case('2')
-<p><span class="text-blue-500">Erreur de mise à jour : {{ $i[1] }}</span></p>
-@break
-@case('3')
-<p><span class="text-orange-500">Conférence absente de la base de données : {{ $i[1] }}</span></p>
-@break
-@case('4')
-<p><span class="text-orange-500">Date d'enregistrement absente dans la vidéo : {{ $i[1] }}</span></p>
-@break
-@default
-<p><span class="text-red-500">Erreur générale : {{ $i[1] }}</span></p>
-@break
-@endswitch
-@endforeach
+<div>
+    <ul>
+        @if ($result['fatal_error'])
+        <h2>Echec de la mise à jour</h2>
+        <p>{{ $result['fatal_error']  }}</p>
+        @else
+        <li>
+            Nombre d'enregistrements mis à jour : {{ $result['update'] }}
+        </li>
+        <li>
+            Nombre d'enregistrements à jour : {{ $result['nothing'] }}
+        </li>
+        <li>
+            Vidéos en ligne mais absente de la base de données : {{ sizeof($result['not_in_db']) }}
+            @if (sizeof($result['not_in_db']) > 0)
+            <ul>
+                @for ($i=0; $i<sizeof($result['not_in_db']); $i++)
+                <li>
+                    {{ $result['not_in_db'][$i]['date'] }} - {{ $result['not_in_db'][$i]['title'] }}
+                </li>
+                @endfor
+            </ul>
+            @endif
+        </li>
+        <li>
+            Vidéos Youtube sans indication de date : {{ sizeof($result['no_date']) }}
+            @if (sizeof($result['no_date']) > 0)
+            <ul>
+                @for ($i=0; $i<sizeof($result['no_date']); $i++)
+                <li>
+                    {{ $result['no_date'][$i]['title'] }}
+                </li>
+                @endfor
+            </ul>
+            @endif
+        </li>
+        @endif
+    </ul>
+</div>
