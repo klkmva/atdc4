@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Location extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'name',
         'address',
@@ -18,7 +18,7 @@ class Location extends Model
 
     public function events()
     {
-        return $this->hasMany((Event::class));
+        return $this->hasMany(Event::class);
     }
 
     protected function name(): Attribute

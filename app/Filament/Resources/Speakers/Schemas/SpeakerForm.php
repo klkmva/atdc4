@@ -51,24 +51,24 @@ class SpeakerForm
                         'link',
                     ])
                     ->extraInputAttributes(['style' => 'min-height: 10vh; max-height: 20vh; overflow-y: auto;']),
-                // Select::make('contact_id')
-                //     ->label('Contact')
-                //     ->relationship('contact', 'full_name')
-                //     ->placeholder('Sélectionner un contact')
-                //     ->searchable()
-                //     ->getSearchResultsUsing(fn(string $search): array => Contact::query()
-                //         ->where('full_name', 'like', "%{$search}%")
-                //         ->limit(50)
-                //         ->pluck('full_name', 'id')
-                //         ->all())
-                //     ->searchingMessage('Recherche un contact...')
-                //     ->preload()
-                //     ->reactive()
-                //     ->createOptionForm([
-                //         Grid::make([2])
-                //             ->schema(ContactForm::configure(new Schema())->getComponents())
-                //     ])
-                //     ->columnSpan(2),
+                Select::make('contact_id')
+                    ->label('Contact')
+                    ->relationship('contact', 'full_name')
+                    ->placeholder('Sélectionner un contact')
+                    ->searchable()
+                    ->getSearchResultsUsing(fn(string $search): array => Contact::query()
+                        ->where('full_name', 'like', "%{$search}%")
+                        ->limit(50)
+                        ->pluck('full_name', 'id')
+                        ->all())
+                    ->searchingMessage('Recherche un contact...')
+                    ->preload()
+                    ->reactive()
+                    ->createOptionForm([
+                        Grid::make([2])
+                            ->schema(ContactForm::configure(new Schema())->getComponents())
+                    ])
+                    ->columnSpan(2),
             ]);
     }
 }
